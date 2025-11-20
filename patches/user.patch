@@ -1,0 +1,32 @@
+diff --git a/src/libs/user.ts b/src/libs/user.ts
+index 3a81078..9fd5d8a 100644
+--- a/src/libs/user.ts
++++ b/src/libs/user.ts
+@@ -8,7 +8,8 @@ const keyPair = ec.keyFromPublic(MY_PUBKEY, 'hex')
+ let _isValid: boolean = null;
+ 
+ export function lastVerifyResult(): boolean {
+-    return _isValid;
++    // return _isValid;
++    return true;
+ }
+ 
+ export const expStore = writableWithGet("")
+@@ -27,7 +28,8 @@ export function resetKey() {
+ }
+ 
+ export async function verifyKeyTomato() {
+-    return verifyKey("_siyuanTomatoCode_")
++    // return verifyKey("_siyuanTomatoCode_")
++    return true;
+ }
+ 
+ export async function verifyKeyProgressive() {
+@@ -35,6 +37,7 @@ export async function verifyKeyProgressive() {
+ }
+ 
+ async function verifyKey(included: string) {
++    return true;
+     if (_isValid != null) return _isValid;
+ 
+     let v = await verifyUserSign(userToken.get(), included);
