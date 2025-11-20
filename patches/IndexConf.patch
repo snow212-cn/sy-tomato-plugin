@@ -1,0 +1,14 @@
+diff --git a/sy-tomato-plugin/src/IndexConf.svelte b/sy-tomato-plugin/src/IndexConf.svelte
+index 495877b..d43ae1a 100644
+--- a/sy-tomato-plugin/src/IndexConf.svelte
++++ b/sy-tomato-plugin/src/IndexConf.svelte
+@@ -368,7 +368,8 @@
+     let addDoc_keyboardShift = $state(false);
+     let addDoc_keyboardCtrl = $state(false);
+     let addDoc_useDialog = $state(FloatingBallDocType_float.id);
+-    let codeValid = $state(false);
++    // let codeValid = $state(false);
++    let codeValid = $state(true);
+     let codeNotValid = $derived(!codeValid);
+     const ICONS_SIZE = 14;
+     let searchKey = $state("");
