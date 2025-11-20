@@ -48,12 +48,11 @@ jobs:
           mkdir -p ${{ github.workspace }}/go
           cd ${{ github.workspace }}/siyuan-plugin
     
-          git clone --depth=1 https://github.com/IAliceBobI/sy-tomato-plugin.git ./origin
+          git clone --depth=2 https://github.com/IAliceBobI/sy-tomato-plugin.git ./origin
           cd origin
 
-          git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/user.patch
-          # git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/Settings.patch
-          git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/IndexConf.patch
+          # git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/user.patch
+          # git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/IndexConf.patch
     
           git status
 
@@ -66,8 +65,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/siyuan-plugin/origin/
           npm i
-          # cd ../sy-tomato-plugin
-          # npm i
           npm run build
 
       - name: make zip package
