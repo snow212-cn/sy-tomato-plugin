@@ -64,15 +64,15 @@ jobs:
           cache-dependency-path: ${{ github.workspace }}/siyuan-plugin/origin/package-lock.json
       - name: Install dependencies
         run: |
-          cd ${{ github.workspace }}/siyuan-plugin/origin/sy-tomato-plugin
+          cd ${{ github.workspace }}/siyuan-plugin/origin/
           npm i
-          cd ../sy-tomato-plugin
-          npm i
+          # cd ../sy-tomato-plugin
+          # npm i
           npm run build
 
       - name: make zip package
         run: |
-          cd ${{ github.workspace }}/siyuan-plugin/origin/sy-tomato-plugin
+          cd ${{ github.workspace }}/siyuan-plugin/origin/
           echo `ls -la`
           # cd build
           mv build sy-tomato-plugin
@@ -90,7 +90,7 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-tomato-plugin/package.zip"
+          artifacts: "${{ github.workspace }}/siyuan-plugin/origin/package.zip"
 
       # - name: Release
       #   uses: ncipollo/release-action@v1
