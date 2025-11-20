@@ -20,11 +20,11 @@ jobs:
         id: version
         run: |
           # 获取已经 release 的版本
-          releasedVersion=""
-          if ! releasedVersion=$(wget -qO- -t3 -T30 "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" 2>/dev/null | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'); then
-            echo "Warning: Failed to get latest release version, using default value" >> $GITHUB_OUTPUT
-            releasedVersion="v0.0.0"
-          fi
+          # releasedVersion=""
+          # if ! releasedVersion=$(wget -qO- -t3 -T30 "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" 2>/dev/null | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'); then
+          #   echo "Warning: Failed to get latest release version, using default value" >> $GITHUB_OUTPUT
+          #   releasedVersion="v0.0.0"
+          # fi
           # 获取最新代码的版本
           packageJson=$(wget -qO- -t3 -T30 "https://raw.githubusercontent.com/IAliceBobI/sy-tomato-plugin/refs/heads/main/plugin.json")
           packageVersion=$(echo "${packageJson}" | grep "version" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
@@ -35,11 +35,7 @@ jobs:
             echo "release_version=v${packageVersion}" >> $GITHUB_OUTPUT 
           fi
 
-          # packageManager=$(echo "${packageJson}" | grep "packageManager" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
-          # packageManager = "npm"
-          # echo "package_manager=${packageManager}" >> $GITHUB_OUTPUT 
-
-          echo "releasedVersion: ${releasedVersion}"
+          # echo "releasedVersion: ${releasedVersion}"
           echo "packageVersion: ${packageVersion}"
           # echo "packageManager: ${packageManager}"
 
