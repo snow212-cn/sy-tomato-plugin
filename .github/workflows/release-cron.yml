@@ -1,0 +1,99 @@
+name: release-cron
+
+on:
+  schedule:
+    - cron: "0 12 * * 1,3,5" # 每周一三五的12点（UTC时间）
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+jobs:
+  create_release:
+    name: get version and create release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: siyuan-plugin
+
+      - name: version check
+        id: version
+        run: |
+          # 获取已经 release 的版本
+          releasedVersion=""
+          if ! releasedVersion=$(wget -qO- -t3 -T30 "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" 2>/dev/null | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'); then
+            echo "Warning: Failed to get latest release version, using default value" >> $GITHUB_OUTPUT
+            releasedVersion="v0.0.0"
+          fi
+          # 获取最新代码的版本
+          packageJson=$(wget -qO- -t3 -T30 "https://raw.githubusercontent.com/IAliceBobI/sy-tomato-plugin/refs/heads/main/plugin.json")
+          packageVersion=$(echo "${packageJson}" | grep "version" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+          # 设置输出
+          if [ "${releasedVersion}" = "v${packageVersion}" ]; then
+            echo "release_version=0" >> $GITHUB_OUTPUT 
+          else
+            echo "release_version=v${packageVersion}" >> $GITHUB_OUTPUT 
+          fi
+
+          # packageManager=$(echo "${packageJson}" | grep "packageManager" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+          # packageManager = "npm"
+          # echo "package_manager=${packageManager}" >> $GITHUB_OUTPUT 
+
+          echo "releasedVersion: ${releasedVersion}"
+          echo "packageVersion: ${packageVersion}"
+          # echo "packageManager: ${packageManager}"
+
+      - name: clone origin and apply patches
+        run: |
+          mkdir -p ${{ github.workspace }}/go
+          cd ${{ github.workspace }}/siyuan-plugin
+    
+          git clone --depth=1 https://github.com/IAliceBobI/sy-tomato-plugin.git ./origin
+          cd origin
+
+          git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/user.patch
+          # git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/Settings.patch
+          git apply --ignore-whitespace ${{ github.workspace }}/siyuan-plugin/patches/IndexConf.patch
+    
+          git status
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: ${{ github.workspace }}/siyuan-plugin/origin/package-lock.json
+      - name: Install dependencies
+        run: |
+          cd ${{ github.workspace }}/siyuan-plugin/origin/sy-tomato-plugin
+          npm i
+          cd ../sy-tomato-plugin
+          npm i
+          npm run build
+
+      - name: make zip package
+        run: |
+          cd ${{ github.workspace }}/siyuan-plugin/origin/sy-tomato-plugin
+          echo `ls -la`
+          # cd build
+          mv build sy-tomato-plugin
+          zip -r package.zip ./sy-tomato-plugin
+          # mv package.zip ..
+
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        if: ${{ steps.version.outputs.release_version != '0' }}
+        with:
+          name: ${{ steps.version.outputs.release_version }}
+          tag: ${{ steps.version.outputs.release_version }}
+          body: "action release"
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-tomato-plugin/package.zip"
+
+      # - name: Release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "package.zip"
+      #     prerelease: false
