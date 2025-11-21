@@ -40,6 +40,8 @@ jobs:
         with:
           owner: IAliceBobI
           token: "${{ secrets.GITHUB_TOKEN }}"
+          head: main
+          base: main
 
       # - name: Sync upstream changes
       #   id: sync
@@ -96,6 +98,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
 
 
