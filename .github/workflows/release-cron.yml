@@ -34,24 +34,25 @@ jobs:
           echo "releasedVersion: ${releasedVersion}"
           echo "packageVersion: ${packageVersion}"
 
-      # - name: fork sync
-      #   uses: tgymnich/fork-sync@v2.0
-      #   if: ${{ steps.version.outputs.release_version != '0' }}
-      #   with:
-      #     token: "${{ secrets.PERSONAL_TOKEN }}"
-
-      - name: Sync upstream changes
-        id: sync
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+      - name: fork sync
+        uses: tgymnich/fork-sync@v2.0
+        if: ${{ steps.version.outputs.release_version != '0' }}
         with:
-          target_sync_branch: main
-          # REQUIRED 'target_repo_token' exactly like this!
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          upstream_sync_branch: main
-          upstream_sync_repo: IAliceBobI/sy-tomato-plugin
-          # upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
-          # Set test_mode true during manual dispatch to run tests instead of the true action!!
-          # test_mode: ${{ inputs.sync_test_mode }}
+          owner: IAliceBobI
+          token: "${{ secrets.GITHUB_TOKEN }}"
+
+      # - name: Sync upstream changes
+      #   id: sync
+      #   uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+      #   with:
+      #     target_sync_branch: main
+      #     # REQUIRED 'target_repo_token' exactly like this!
+      #     target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     upstream_sync_branch: main
+      #     upstream_sync_repo: IAliceBobI/sy-tomato-plugin
+      #     # upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
+      #     # Set test_mode true during manual dispatch to run tests instead of the true action!!
+      #     # test_mode: ${{ inputs.sync_test_mode }}
 
       - uses: actions/checkout@v4
       
@@ -95,6 +96,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
 
 
