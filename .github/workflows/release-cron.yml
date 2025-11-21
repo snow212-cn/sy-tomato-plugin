@@ -37,8 +37,8 @@ jobs:
       - name: fork sync
         uses: tgymnich/fork-sync@v2.0
         if: ${{ steps.version.outputs.release_version != '0' }}
-        with:
-          token: "${{ secrets.PERSONAL_TOKEN }}"
+        # with:
+        #   token: "${{ secrets.PERSONAL_TOKEN }}"
       
       - uses: actions/checkout@v4
       
@@ -82,6 +82,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
 
 
