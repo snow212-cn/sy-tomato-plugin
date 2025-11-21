@@ -12,6 +12,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - name: version check
+        id: version
+        run: |
+          # 获取已经 release 的版本
+          releasedVersion=""
+          if ! releasedVersion=$(wget -qO- -t3 -T30 "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" 2>/dev/null | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g'); then
+            echo "Warning: Failed to get latest release version, using default value" >> $GITHUB_OUTPUT
+            releasedVersion="v0.0.0"
+          fi
+          # 获取最新代码的版本
+          packageJson=$(wget -qO- -t3 -T30 "https://raw.githubusercontent.com/IAliceBobI/sy-progressive-plugin/refs/heads/main/plugin.json")
+          packageVersion=$(echo "${packageJson}" | grep "version" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
+          # 设置输出
+          if [ "${releasedVersion}" = "v${packageVersion}" ]; then
+            echo "release_version=0" >> $GITHUB_OUTPUT 
+          else
+            echo "release_version=v${packageVersion}" >> $GITHUB_OUTPUT 
+          fi
+
+          echo "releasedVersion: ${releasedVersion}"
+          echo "packageVersion: ${packageVersion}"
+
       - name: clone origin and apply patches
         run: |
           git clone https://github.com/IAliceBobI/sy-tomato-plugin.git ./origin
@@ -42,8 +65,16 @@ jobs:
 
       - name: Release
         uses: ncipollo/release-action@v1
+        if: ${{ steps.version.outputs.release_version != '0' }}
         with:
-          artifacts: "package.zip"
+          name: ${{ steps.version.outputs.release_version }}
+          tag: ${{ steps.version.outputs.release_version }}
+          body: "action release"
+          draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
+          artifacts: "package.zip"
+
 
 
