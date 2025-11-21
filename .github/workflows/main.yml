@@ -12,13 +12,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: clone origin and apply patches
+        run: |
+          # mkdir -p ${{ github.workspace }}/go
+    
+          git clone https://github.com/IAliceBobI/sy-tomato-plugin.git ./origin
+          cd origin
+          git apply --ignore-whitespace ${{ github.workspace }}/patches/user.patch
+          git apply --ignore-whitespace ${{ github.workspace }}/patches/IndexConf.patch
+    
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
           cache-dependency-path: package-lock.json
-      - run: npm i
-      - run: npm run build
+          
+      - name: Install dependencies
+        run: |
+          cd ${{ github.workspace }}/origin/
+          npm i
+          npm run build
+          
       - name: make zip package
         run: |
           cd build
@@ -30,3 +44,4 @@ jobs:
         with:
           artifacts: "package.zip"
           prerelease: false
+
