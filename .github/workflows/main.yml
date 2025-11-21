@@ -25,7 +25,7 @@ jobs:
             releasedVersion="v0.0.0"
           fi
           # 获取最新代码的版本
-          packageJson=$(wget -qO- -t3 -T30 "https://raw.githubusercontent.com/IAliceBobI/sy-progressive-plugin/refs/heads/main/plugin.json")
+          packageJson=$(wget -qO- -t3 -T30 "https://raw.githubusercontent.com/IAliceBobI/sy-tomato-plugin/refs/heads/main/plugin.json")
           packageVersion=$(echo "${packageJson}" | grep "version" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
           # 设置输出
           if [ "${releasedVersion}" = "v${packageVersion}" ]; then
@@ -77,6 +77,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "package.zip"
+
 
 
 
