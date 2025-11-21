@@ -34,7 +34,8 @@ jobs:
           echo "releasedVersion: ${releasedVersion}"
           echo "packageVersion: ${packageVersion}"
 
-      - uses: tgymnich/fork-sync@v1.2.1
+      - name: fork sync
+        uses: tgymnich/fork-sync@v1.2.1
         if: ${{ steps.version.outputs.release_version != '0' }}
         with:
           github_token: "{{ github.token }}"
@@ -81,4 +82,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
