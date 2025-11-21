@@ -14,10 +14,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: clone origin and apply patches
         run: |
-          # mkdir -p ${{ github.workspace }}/go
-    
           git clone https://github.com/IAliceBobI/sy-tomato-plugin.git ./origin
-          cd origin
+          # cd ${{ github.workspace }}/origin/
+          cp -rf ./origin/* .
+          rm -rf ./origin
           git apply --ignore-whitespace ${{ github.workspace }}/patches/user.patch
           git apply --ignore-whitespace ${{ github.workspace }}/patches/IndexConf.patch
     
@@ -29,8 +29,9 @@ jobs:
           
       - name: Install dependencies
         run: |
-          cd ${{ github.workspace }}/origin/
+          cd ${{ github.workspace }}/
           npm i
+          # cd ${{ github.workspace }}/origin/
           npm run build
           
       - name: make zip package
@@ -44,4 +45,5 @@ jobs:
         with:
           artifacts: "package.zip"
           prerelease: false
+
 
