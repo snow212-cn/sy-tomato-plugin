@@ -1,4 +1,4 @@
-name: Create Release on Tag Push
+name: Release Cron
 
 on:
   schedule:
@@ -98,6 +98,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
 
 
