@@ -42,7 +42,11 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           head: main
           base: main
-
+          
+      - name: Update local workspace
+        run: |
+          git pull origin main
+          
       # - name: Sync upstream changes
       #   id: sync
       #   uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
@@ -98,6 +102,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
 
 
