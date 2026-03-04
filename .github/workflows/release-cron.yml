@@ -2,7 +2,7 @@ name: Release Cron
 
 on:
   schedule:
-    - cron: "0 0,12 * * *" # UTC时间
+    - cron: "0 12 * * *" # UTC时间
   workflow_dispatch:
   push:
     tags:
@@ -42,7 +42,8 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           head: main
           base: main
-          
+      - uses: actions/checkout@v4
+      
       - name: Update local workspace
         run: |
           git pull origin main
@@ -60,8 +61,6 @@ jobs:
       #     # Set test_mode true during manual dispatch to run tests instead of the true action!!
       #     # test_mode: ${{ inputs.sync_test_mode }}
 
-      - uses: actions/checkout@v4
-      
       - name: clone origin and apply patches
         run: |
           # git clone https://github.com/IAliceBobI/sy-tomato-plugin.git ./origin
@@ -102,6 +101,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
 
 
