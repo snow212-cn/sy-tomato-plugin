@@ -9,6 +9,11 @@ on:
       - "v*"
 
 # https://github.com/marketplace/actions
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -101,6 +106,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # artifacts: "${{ github.workspace }}/siyuan-plugin/origin/sy-progressive-plugin/package.zip"
           artifacts: "sy-tomato-plugin.zip"
+
 
 
 
