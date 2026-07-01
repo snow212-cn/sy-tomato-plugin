@@ -174,14 +174,32 @@ export enum WsActionTypes {
 export abstract class TomatoI18nABCMAX {
     conf: Config.IConf | {
         appearance: {
-            lang: "ar_SA" | "pt_BR"
+            lang: string
         }
     };
     init() {
         this.conf = Siyuan.config
     }
+    /**
+     * 把运行时的 lang（新码 zh-CN / 旧码 zh_CN）归一化成内部旧码。
+     * 覆盖思源官方对照表全部 13 种语言。
+     * 不在表里的值原样返回，保证旧版本/未知语言不被破坏。
+     *
+     * 注意：纯读取，绝不回写 conf.appearance.lang——this.conf 是 window.siyuan.config
+     * 的引用，回写会污染思源全局配置导致本体语言错乱。
+     */
+    get lang(): string {
+        const lang = this.conf?.appearance?.lang ?? "en_US"
+        const newToOld: Record<string, string> = {
+            "zh-CN": "zh_CN", "zh-TW": "zh_CHT",
+            "en": "en_US", "de": "de_DE", "fr": "fr_FR", "es": "es_ES",
+            "it": "it_IT", "ja": "ja_JP", "ru": "ru_RU", "pl": "pl_PL",
+            "ar": "ar_SA", "he": "he_IL", "pt-BR": "pt_BR",
+        }
+        return newToOld[lang] ?? lang  // 旧码不在表里则原样返回（旧版本兼容）
+    }
     get isEN() {
-        return this.conf.appearance.lang == "en_US";
+        return this.lang == "en_US";
     }
 }
 
