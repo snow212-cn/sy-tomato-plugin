@@ -181,6 +181,9 @@ function notebookStoreFactory(k = "storeNoteBox_selectedNotebook") {
 
 export const storeNoteBox_selectedNotebook = notebookStoreFactory();
 export const storeNoteBox_fastnote = notebookStoreFactory("storeNoteBox_fastnote");
+/** 批注草稿文档存放笔记本（2026-09-02）：未配置默认跟随系统日记本（annoDraft.initAnnoDraftNotebookDefault 注入） */
+export const DRAFT_NOTEBOOK_KEY = "commentBoxAnnoDraftNotebook";
+export const commentBoxAnnoDraftNotebook = notebookStoreFactory(DRAFT_NOTEBOOK_KEY);
 
 export const storeAttrManager = () => {
     const store = writableWithGet({} as AttrType);
@@ -323,6 +326,10 @@ export const userID = settingFactory("userID", "", STORAGE_SETTINGS, null as TSK
 // 语义 = 已回填激活码的 md5 指纹（libs/redeem.ts fingerprintOf，spec admin-codes 批次 B1）；
 // 升级前老值为布尔——读到的代码走指纹比对自然处理（布尔必然不等 → 触发一次幂等回填）
 export const licenseCloudSynced = settingFactory("licenseCloudSynced", "", STORAGE_SETTINGS, null as TSK);
+/** 批注收集使用记忆（2026-09-02，不出设置面板行——是记忆不是偏好）：范围/去向/指定文件目标 */
+export const annoCollectScope = settingFactory("annoCollectScope", "doc", STORAGE_SETTINGS, null as TSK);
+export const annoCollectDest = settingFactory("annoCollectDest", "daily", STORAGE_SETTINGS, null as TSK);
+export const annoCollectTargetDoc = settingFactory("annoCollectTargetDoc", "", STORAGE_SETTINGS, null as TSK);
 export const exportIntervalSec = settingFactory("exportIntervalSec", "5", STORAGE_SETTINGS, null as TSK);
 export const exportIntervalSecOn = settingFactory("exportIntervalSecOn", true, STORAGE_SETTINGS, null as TSK);
 export const exportCleanFiles = settingFactory("exportCleanFiles", "60", STORAGE_SETTINGS, null as TSK);
@@ -414,16 +421,15 @@ export const cardPriorityBoxAutoHide = settingFactory("cardPriorityBoxAutoHide",
 export const auto_card_priority = settingFactory("auto-card-priority", false, STORAGE_SETTINGS, null as TSK);
 export const card_priority_slider_hide = settingFactory("card_priority_slider_hide", false, STORAGE_SETTINGS, null as TSK);
 export const card_priority_stopBtn_hide = settingFactory("card_priority_stopBtn_hide", false, STORAGE_SETTINGS, null as TSK);
-export const cpBoxCheckbox = settingFactory("cpBoxCheckbox", false, STORAGE_SETTINGS, null as TSK);
 export const superRefBoxCheckBox = settingFactory("superRefBoxCheckBox", false, STORAGE_SETTINGS, null as TSK);
 export const superRefBoxGlobalLnkMenu = settingFactory("superRefBoxGlobalLnkMenu", true, STORAGE_SETTINGS, null as TSK);
 export const blockEditorBox = settingFactory("blockEditorBox", false, STORAGE_SETTINGS, null as TSK);
 export const blockEditorMenu = settingFactory("blockEditorMenu", true, STORAGE_SETTINGS, null as TSK);
 export const superRefBoxGlobalFixMenu = settingFactory("superRefBoxGlobalFixMenu", true, STORAGE_SETTINGS, null as TSK);
-export const linkBoxCheckbox = settingFactory("linkBoxCheckbox", false, STORAGE_SETTINGS, null as TSK);
+// R5 □1 总开关化退役：cpBoxCheckbox/linkBoxCheckbox/linkBoxSyncBlock 三功能开关并入
+// pairBarEnabled（老 petal 存量值读不到即忽略，零迁移）
 export const linkBoxBilinkMenu = settingFactory("linkBoxBilinkMenu", true, STORAGE_SETTINGS, null as TSK);
 export const linkBoxAttrIconOnHide = settingFactory("linkBoxAttrIconOnHide", false, STORAGE_SETTINGS, null as TSK);
-export const linkBoxSyncBlock = settingFactory("linkBoxSyncBlock", false, STORAGE_SETTINGS, null as TSK);
 export const linkBoxSyncHref = settingFactory("linkBoxSyncHref", false, STORAGE_SETTINGS, null as TSK);
 export const linkBoxSyncRef = settingFactory("linkBoxSyncRef", false, STORAGE_SETTINGS, null as TSK);
 export const linkBoxSyncBlockAuto = settingFactory("linkBoxSyncBlockAuto", true, STORAGE_SETTINGS, null as TSK);
@@ -431,7 +437,7 @@ export const linkBoxSyncScanDeep = settingFactory("linkBoxSyncScanDeep", true, S
 export const linkBoxSyncRemapChildID = settingFactory("linkBoxSyncRemapChildID", false, STORAGE_SETTINGS, null as TSK);
 export const linkBoxLnkTitle = settingFactory("linkBoxLnkTitle", false, STORAGE_SETTINGS, null as TSK);
 export const linkBoxUseLnkOrRef = settingFactory("linkBoxUseLnkOrRef", false, STORAGE_SETTINGS, null as TSK);
-// 块配对接力浮条（□2 V1）：入口非功能，开关正交（图标亮灰跟随各功能总开关）
+// 块配对接力浮条（□2 V1 起）：R5 □1 后总开关管全部注册，浮条灰态只剩 VIP 档（gate 退役）
 export const pairBarEnabled = settingFactory("pairBarEnabled", true, STORAGE_SETTINGS, null as TSK);
 export const pairBarDefaultFunc = settingFactory("pairBarDefaultFunc", "", STORAGE_SETTINGS, null as TSK);
 // 「上次功能」记忆（R4 起直跳退役）：执行成功即写；funcs 面板高亮上次功能用（只高亮不抢焦点）
@@ -468,7 +474,6 @@ export const back_link_dailynote_off = settingFactory("back-link-dailynote-off",
 export const back_link_refresh_off = settingFactory("back_link_refresh_off", true, STORAGE_SETTINGS, null as TSK);
 export const bk_refresh_interval_sec = settingFactory("bk_refresh_interval_sec", 15, STORAGE_SETTINGS, null as TSK);
 export const bk_visible_only = settingFactory("bk_visible_only", true, STORAGE_SETTINGS, null as TSK);
-export const back_link_more_btns = settingFactory("back_link_more_btns", true, STORAGE_SETTINGS, null as TSK);
 export const back_link_goto_bottom_btn = settingFactory("back_link_goto_bottom_btn", false, STORAGE_SETTINGS, null as TSK);
 export const back_link_concept_fold = settingFactory("back_link_concept_fold", true, STORAGE_SETTINGS, null as TSK);
 export const back_link_copy = settingFactory("back_link_copy", false, STORAGE_SETTINGS, null as TSK);
@@ -478,9 +483,10 @@ export const back_link_embed = settingFactory("back_link_embed", false, STORAGE_
 export const back_link_ref = settingFactory("back_link_ref", false, STORAGE_SETTINGS, null as TSK);
 export const back_link_move_here = settingFactory("back_link_move_here", true, STORAGE_SETTINGS, null as TSK);
 export const back_link_move_with_backlink = settingFactory("back_link_move_with_backlink", false, STORAGE_SETTINGS, null as TSK);
-export const back_link_show_floatUI = settingFactory("back_link_show_floatUI", true, STORAGE_SETTINGS, null as TSK);
 export const back_link_protyle_height = settingFactory("back_link_protyle_height", "200", STORAGE_SETTINGS, null as TSK);
 export const back_link_show_path = settingFactory("back_link_show_path", false, STORAGE_SETTINGS, null as TSK);
+// □4 面板宽度模式：false=全宽（历史现状），true=跟随编辑器内容盒宽
+export const back_link_follow_width = settingFactory("back_link_follow_width", false, STORAGE_SETTINGS, null as TSK);
 export const back_link_passup_heading = settingFactory("back_link_passup_heading", false, STORAGE_SETTINGS, null as TSK);
 export const back_link_passup_quote = settingFactory("back_link_passup_quote", true, STORAGE_SETTINGS, null as TSK);
 export const back_link_passup_super = settingFactory("back_link_passup_super", true, STORAGE_SETTINGS, null as TSK);
@@ -536,6 +542,8 @@ export const mindWireWidth = settingFactory("mindWireWidth", 2, STORAGE_SETTINGS
 export const mindWireLine = settingFactory("mindWireLine", false, STORAGE_SETTINGS, null as TSK);
 export const mindWireColorfull = settingFactory("mindWireColorfull", false, STORAGE_SETTINGS, null as TSK);
 export const mindWireStarRefOnly = settingFactory("mindWireStarRefOnly", true, STORAGE_SETTINGS, null as TSK);
+// □2 词级导线（划词连线）总开关（spec §4.8 行 5；设置 UI 行随 □5 ConfMindWire 落地）
+export const mindWireWordWire = settingFactory("mindWireWordWire", true, STORAGE_SETTINGS, null as TSK);
 export const aiBoxMenuShow = settingFactory("aiBoxMenuShow", true, STORAGE_SETTINGS, null as TSK);
 export const cozeSearchMenuShow = settingFactory("cozeSearchMenuShow", true, STORAGE_SETTINGS, null as TSK);
 export const aiBoxPrompts = settingFactory("aiBoxPrompts", [], STORAGE_SETTINGS, null as TSK);
@@ -643,6 +651,12 @@ export const floatbarFlatCollapsed = settingFactory(
 // 收起/展开跨分片、跨会话记住用户选择；未存过值=开（与已发布的默认展开兼容）
 export const digSubrankOpen = settingFactory(
     "digSubrankOpen", true, STORAGE_Prog_SETTINGS, null as TSK);
+// 浮条展开偏好（2026-09-02，同族第三块持久记忆——子排/平铺折叠之后轮到浮条本体）：
+// 用户最后一次显式意志（点球展开/点 ✕ 收球）跨文档、跨会话记住；三态 null=从未表达
+// （出场维持各态出厂默认：片/free 展开、书/摘抄收球，老用户升级零迁移）。free 态
+// 上岗即展开不看它（□11 拍板）；移动端 ✕=本会话隐藏、free ✕=下班，均不写它
+export const floatbarExpandPref = settingFactory(
+    "floatbarExpandPref", null, STORAGE_Prog_SETTINGS, null as TSK);
 
 // ---------------
 export const navSourceBlock = settingFactory("navSourceBlock", true, STORAGE_SETTINGS, null as TSK);

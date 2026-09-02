@@ -18,8 +18,6 @@
         back_link_ref,
         back_link_refresh_off,
         back_link_remove_refs,
-        back_link_show_floatUI,
-        back_link_show_path,
         bk_refresh_interval_sec,
         bk_visible_only,
         bk启用禁用文档的底部反链menu,
@@ -60,6 +58,7 @@
     } from "./ToolbarBox";
     import { tomatoI18n } from "./tomatoI18n";
     import HotkeyCap from "./HotkeyCap.svelte";
+    import ConfHelpIcon from "./ConfHelpIcon.svelte";
 
     const ICONS_SIZE = 14;
 
@@ -72,6 +71,7 @@
         <div class="section-title">
             <input type="checkbox" class="b3-switch" bind:checked={$backLinkBottomBoxCheckbox} />
             {tomatoI18n.底部反链}
+            <ConfHelpIcon token="SVELdPHKYoGMj1xkmF3cIPg3nZd" />
         </div>
         {#if $backLinkBottomBoxCheckbox}
             <div>{tomatoI18n.menu不显示菜单不影响快捷键的使用}</div>
@@ -88,11 +88,6 @@
             <div>
                 <input type="number" min="0" class="b3-text-field" bind:value={$back_link_mention_count} />
                 {tomatoI18n.mentionDocs最大展开的提及文件数}
-            </div>
-
-            <div>
-                <input type="checkbox" class="b3-switch" bind:checked={$back_link_show_path} />
-                {tomatoI18n.显示路径}
             </div>
 
             <div class="softBox">
@@ -138,11 +133,6 @@
                 <input type="checkbox" class="b3-switch" bind:checked={$back_link_ref} />
                 <span class="b3-label__text"> {@html icon("Ref", ICONS_SIZE)}</span>
                 {tomatoI18n.引用到文档}
-            </div>
-
-            <div>
-                <input type="checkbox" class="b3-switch" bind:checked={$back_link_show_floatUI} />
-                {tomatoI18n.在悬浮窗内显示底部反链}
             </div>
 
             <div>
@@ -198,6 +188,7 @@
         <div class="section-title">
             <input type="checkbox" class="b3-switch" bind:checked={$toolbarBoxCheckbox} />
             {tomatoI18n.开启toolbar按钮}
+            <ConfHelpIcon token="NDgJd64mmo7c0Wxj42RcNv2Tnaf" />
         </div>
         {#if $toolbarBoxCheckbox}
             <div>{tomatoI18n.menu不显示菜单不影响快捷键的使用}</div>
@@ -243,6 +234,7 @@
         <div class="section-title">
             <input type="checkbox" class="b3-switch" bind:checked={$readingPointBoxCheckbox} />
             {tomatoI18n.阅读点}
+            <ConfHelpIcon token="KQOWdXzT8o05LlxPfJCcBHNEnYc" />
         </div>
         {#if $readingPointBoxCheckbox}
             <div>
@@ -303,6 +295,7 @@
         <div class="section-title">
             <input type="checkbox" class="b3-switch" bind:checked={$imgBoxCheckbox} />
             {tomatoI18n.复制为图片}<HotkeyCap hk={ImgBoxHotKey} pluginName="sy-tomato-plugin"></HotkeyCap>
+            <ConfHelpIcon token="QGx5d437SoArUyxZ6c3cqhmfnnb" />
         </div>
         {#if $imgBoxCheckbox}
             <div>{tomatoI18n.menu不显示菜单不影响快捷键的使用}</div>

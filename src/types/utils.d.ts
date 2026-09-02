@@ -5,7 +5,7 @@ type wsCB = (detail: WsMain) => any;
 
 type Func = (...args: any[]) => any;
 
-type LinkElementAttr = { isThisDoc: boolan }
+type LinkElementAttr = { isThisDoc: boolean }
 type LinkItem = { conceptTree: string[], text: string, count: number, id: string, dataNodeIDSet: Set<string>, blockIDs: Set<string>, attrs: LinkElementAttr };
 type RefCollector = Map<string, LinkItem>;
 type Overlays = { overlays: Overlay[], originWidth: number }
@@ -15,6 +15,9 @@ type Overlay = { left: number, top: number, width: number, height: number, angle
 type TSK = keyof TomatoSettings
 
 type TomatoSettings = {
+    annoCollectScope: string,
+    annoCollectDest: string,
+    annoCollectTargetDoc: string,
     dailyQuota: string,
     prefixArticlesSoftLimit: string,
     toolbarTidyExt: string,
@@ -71,6 +74,7 @@ type TomatoSettings = {
     mindWireEnable: boolean,
     mindWireDynamicLine: boolean,
     mindWireCheckbox: boolean,
+    mindWireWordWire: boolean,
     addSelectionBtnsDesktop: boolean,
     addSelectionBtnsMobile: boolean,
     digestAddReadingpoint: boolean,
@@ -117,6 +121,7 @@ type TomatoSettings = {
     floatbarMainBtns: string[],
     floatbarFlatCollapsed: boolean,
     digSubrankOpen: boolean,
+    floatbarExpandPref: boolean | null,
     markOriginTextBG: boolean,
     pieceNoBacktraceLink: boolean,
     digestNoBacktraceLink: boolean,
@@ -167,10 +172,7 @@ type TomatoSettings = {
     cardPriorityBoxAutoHide: boolean,
     card_priority_slider_hide: boolean,
     card_priority_stopBtn_hide: boolean,
-    cpBoxCheckbox: boolean,
-    linkBoxCheckbox: boolean,
     linkBoxLnkTitle: boolean,
-    linkBoxSyncBlock: boolean,
     linkBoxSyncRef: boolean,
     linkBoxSyncHref: boolean,
     linkBoxSyncBlockAuto: boolean,
@@ -248,7 +250,6 @@ type TomatoSettings = {
     back_link_refresh_off: boolean,
     bk_refresh_interval_sec: number,
     bk_visible_only: boolean,
-    back_link_more_btns: boolean,
     back_link_goto_bottom_btn: boolean,
     back_link_concept_fold: boolean,
     back_link_copy: boolean,
@@ -258,9 +259,9 @@ type TomatoSettings = {
     back_link_ref: boolean,
     back_link_move_here: boolean,
     back_link_move_with_backlink: boolean,
-    back_link_show_floatUI: boolean,
     back_link_protyle_height: string,
     back_link_show_path: boolean,
+    back_link_follow_width: boolean,
     back_link_passup_heading: boolean,
     back_link_passup_quote: boolean,
     back_link_passup_super: boolean,
@@ -440,11 +441,18 @@ type BacklinkSv<T = any> = {
     parentID?: string;
     parentType?: string;
     edit?: boolean;
+    /** □4 展示态（纯 UI state 不落盘）：截断→展开→编辑 三态，见 spec §4 */
+    expanded?: boolean;
+    /** □4 截断态实测正文是否超 3 行（不足则不渲染渐隐+提示条） */
+    clampOverflow?: boolean;
     updated: string;
     sortBy: string;
     protyle: T;
     ob: MutationObserver;
     row?: Block; // commentbox用.
+    /** □3 提及马克笔：本卡来源文档响应的 keywords（编辑态 CSS Highlight 高亮用，
+     *  官方 searchMarkRender 同源）；空数组=无高亮 */
+    keywords?: string[];
 };
 
 type EventsReadingPoint = { docID: string, blockID: string, title: string, time: Date };
