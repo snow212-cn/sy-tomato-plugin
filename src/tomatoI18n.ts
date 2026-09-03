@@ -646,6 +646,16 @@ export class TomatoI18n extends TomatoI18nABC {
             default: return "No annotations";
         }
     }
+    // 划词工具条批注入口（□4 2026-09-03）设置开关文案
+    public get 划词工具条批注入口() {
+        switch (this.lang) {
+            case "zh_CN": return "划词工具条入口";
+            case "zh_CHT": return "劃詞工具條入口";
+            case "ja_JP": return "選択ツールバー入口";
+            case "en_US":
+            default: return "Text-selection toolbar entry";
+        }
+    }
     // 批注收集（2026-09-02）新增键：小窗/右键级联/命令/回执
     public get 收集批注() {
         switch (this.lang) {
@@ -4903,6 +4913,47 @@ export class TomatoI18n extends TomatoI18nABC {
             default: return "View the book's digest list and the piece of the current block; click to jump";
         }
     }
+    // free 态 traceUp 语义适配（群反馈 650189）：普通文档无书，「本书摘抄」→「关联摘抄」
+    public get 关联摘抄() {
+        switch (this.lang) {
+            case "zh_CN": return "关联摘抄";
+            case "zh_CHT": return "關聯摘抄";
+            case "en_US":
+            default: return "Linked digests";
+        }
+    }
+    public get tip关联摘抄() {
+        switch (this.lang) {
+            case "zh_CN": return "查看本文档的关联摘抄清单，点击跳转";
+            case "zh_CHT": return "查看本文檔的關聯摘抄清單，點擊跳轉";
+            case "en_US":
+            default: return "View digests linked to this doc; click to jump";
+        }
+    }
+    public get 本文档的关联摘抄() {
+        switch (this.lang) {
+            case "zh_CN": return "本文档的关联摘抄";
+            case "zh_CHT": return "本文檔的關聯摘抄";
+            case "en_US":
+            default: return "Digests linked to this doc";
+        }
+    }
+    public get 本文档还没有摘抄() {
+        switch (this.lang) {
+            case "zh_CN": return "本文档还没有摘抄";
+            case "zh_CHT": return "本文檔還沒有摘抄";
+            case "en_US":
+            default: return "No linked digests for this doc yet";
+        }
+    }
+    public get 本文档摘抄清单() {
+        switch (this.lang) {
+            case "zh_CN": return "本文档摘抄清单";
+            case "zh_CHT": return "本文檔摘抄清單";
+            case "en_US":
+            default: return "Doc digest list";
+        }
+    }
     public get tip路径胶囊() {
         switch (this.lang) {
             case "zh_CN": return "来自：点击回原文（原文块→片→重切→书，自动降级）";
@@ -6003,10 +6054,10 @@ export class TomatoI18n extends TomatoI18nABC {
     }
     public get tip设置归拢() {
         switch (this.lang) {
-            case "zh_CN": return "把旧版散落在各处的摘抄产物集中挪进 prog-data 统一管理";
-            case "zh_CHT": return "把舊版散落在各處的摘抄產物集中挪進 prog-data 統一管理";
+            case "zh_CN": return "把散落在各处的摘抄夹收进 prog-data 的摘抄总夹统一管理";
+            case "zh_CHT": return "把散落在各處的摘抄夾收進 prog-data 的摘抄總夾統一管理";
             case "en_US":
-            default: return "Move legacy digest artifacts scattered around into prog-data for unified management";
+            default: return "Gather scattered digest folders into the digest hub under prog-data";
         }
     }
     public get tip设置移动端顶栏() {
@@ -6528,7 +6579,7 @@ export class TomatoI18n extends TomatoI18nABC {
         }
     }
 
-    // ===== 思维导线设置分区（□5，spec §4.8/§6）：ConfMindWire.svelte 专用 =====
+    // ===== 思维导线设置分区（□5，spec §4.8/§6，现居 ConfVisual.svelte 可视化域） =====
     public get 划词连线() {
         switch (this.lang) {
             case "zh_CN": return "词级导线（划词连线）";
@@ -6586,10 +6637,273 @@ export class TomatoI18n extends TomatoI18nABC {
     public get 关系配色帮助() {
         switch (this.lang) {
             case "zh_CN": return "词级线按关系类型着色：呼应/伏笔/比喻/对比/因果";
-            case "zh_CHT": return "詞級線按關係類型著色：呼應/伏筆/比喻/對比/因果";
+            case "zh_CHT": return "詞級線按關係類型著色：呼應/伏線/比喩/對比/因果";
             case "ja_JP": return "語レベルの線は関係タイプで着色します：呼応/伏線/比喩/対比/因果";
             case "en_US":
             default: return "Word wires are colored by relation: echo / foreshadow / metaphor / contrast / cause";
+        }
+    }
+    // 设置页重划 □1（2026-09-03）：左侧导航 9 域文案（「番茄钟」「闪卡」复用既有 key——
+    // 闪卡在基类 text11.ts 十语种全档）。域=分区名非功能名，六语种全档；英文从短（窄导航列 148px）
+    public get 反链与引用() {
+        switch (this.lang) {
+            case "zh_CN": return "反链与引用";
+            case "zh_CHT": return "反鏈與引用";
+            case "es_ES": return "Enlaces y refs.";
+            case "fr_FR": return "Rétroliens et réf.";
+            case "ja_JP": return "バックリンクと参照";
+            case "en_US":
+            default: return "Backlinks & refs";
+        }
+    }
+    public get AI与批注() {
+        switch (this.lang) {
+            case "zh_CN": return "AI 与批注";
+            case "zh_CHT": return "AI 與批註";
+            case "es_ES": return "IA y anotaciones";
+            case "fr_FR": return "IA et annotations";
+            case "ja_JP": return "AIと注釈";
+            case "en_US":
+            default: return "AI & annotations";
+        }
+    }
+    public get 可视化() {
+        switch (this.lang) {
+            case "zh_CN": return "可视化";
+            case "zh_CHT": return "可視化";
+            case "es_ES": return "Visualización";
+            case "fr_FR": return "Visualisation";
+            case "ja_JP": return "ビジュアル";
+            case "en_US":
+            default: return "Visualization";
+        }
+    }
+    public get 编辑与块() {
+        switch (this.lang) {
+            case "zh_CN": return "编辑与块";
+            case "zh_CHT": return "編輯與塊";
+            case "es_ES": return "Edición y bloques";
+            case "fr_FR": return "Édition et blocs";
+            case "ja_JP": return "編集とブロック";
+            case "en_US":
+            default: return "Editing & blocks";
+        }
+    }
+    public get 速记() {
+        switch (this.lang) {
+            case "zh_CN": return "速记";
+            case "zh_CHT": return "速記";
+            case "es_ES": return "Captura rápida";
+            case "fr_FR": return "Capture rapide";
+            case "ja_JP": return "クイックメモ";
+            case "en_US":
+            default: return "Quick capture";
+        }
+    }
+    public get 文档管理() {
+        switch (this.lang) {
+            case "zh_CN": return "文档管理";
+            case "zh_CHT": return "文檔管理";
+            case "es_ES": return "Documentos";
+            case "fr_FR": return "Documents";
+            case "ja_JP": return "ドキュメント管理";
+            case "en_US":
+            default: return "Documents";
+        }
+    }
+    public get 通用() {
+        switch (this.lang) {
+            case "zh_CN": return "通用";
+            case "zh_CHT": return "通用";
+            case "es_ES": return "General";
+            case "fr_FR": return "Général";
+            case "ja_JP": return "一般";
+            case "en_US":
+            default: return "General";
+        }
+    }
+    // 空格转引用（SpaceRefBox，2026-09-03）：@@词+空格静默转引用（@@ 前缀=触发开关，英文误触修复同日补）
+    public get 空格转引用() {
+        switch (this.lang) {
+            case "zh_CN": return "空格转引用";
+            case "zh_CHT": return "空格轉引用";
+            case "ja_JP": return "スペースで参照化";
+            case "en_US":
+            default: return "Space to reference";
+        }
+    }
+    public get 空格转引用说明() {
+        switch (this.lang) {
+            case "zh_CN": return "输入 @@词 再敲一个空格，原地转为引用；没有匹配文档时自动新建空文档再引用；不带 @@ 前缀的普通打字（含英文）永不触发";
+            case "zh_CHT": return "輸入 @@詞 再敲一個空格，原地轉為引用；沒有匹配文檔時自動新建空文檔再引用；不帶 @@ 前綴的普通打字（含英文）永不觸發";
+            case "ja_JP": return "@@単語 と入力してスペースを打つとその場で参照に変換；該当文書がなければ空文書を新規作成して参照します。@@ プレフィックスなしの通常入力（英語を含む）は変換されません";
+            case "en_US":
+            default: return "Type @@word then a space to turn it into a reference in place; if no document matches, an empty one is created silently. Plain typing without the @@ prefix never triggers";
+        }
+    }
+    public get 空格转引用形态() {
+        switch (this.lang) {
+            case "zh_CN": return "产物形态";
+            case "zh_CHT": return "產物形態";
+            case "ja_JP": return "挿入形式";
+            case "en_US":
+            default: return "Insert as";
+        }
+    }
+    public get 空格转引用块引用() {
+        switch (this.lang) {
+            case "zh_CN": return "块引用";
+            case "zh_CHT": return "塊引用";
+            case "ja_JP": return "ブロック参照";
+            case "en_US":
+            default: return "Block ref";
+        }
+    }
+    public get 空格转引用文档链接() {
+        switch (this.lang) {
+            case "zh_CN": return "文档链接";
+            case "zh_CHT": return "文檔鏈接";
+            case "ja_JP": return "文書リンク";
+            case "en_US":
+            default: return "Doc link";
+        }
+    }
+    // 引用效果多档化（2026-09-03）：cssRefStyle/cssRefSquareBrackets 双开关合并为单 select 五档
+    public get 引用效果() {
+        switch (this.lang) {
+            case "zh_CN": return "引用效果";
+            case "zh_CHT": return "引用效果";
+            case "ja_JP": return "参照エフェクト";
+            case "es_ES": return "Efecto de referencia";
+            case "fr_FR": return "Effet de référence";
+            case "it_IT": return "Effetto del riferimento";
+            case "en_US":
+            default: return "Reference effect";
+        }
+    }
+    public get 引用效果说明() {
+        switch (this.lang) {
+            case "zh_CN": return "给块引用选一种外观效果；配色跟随当前主题，明暗模式自动适配";
+            case "zh_CHT": return "給塊引用選一種外觀效果；配色跟隨當前主題，明暗模式自動適配";
+            case "ja_JP": return "ブロック参照の外観エフェクトを選択します。配色は現在のテーマに従い、明暗モードに自動対応します";
+            case "es_ES": return "Elija un efecto visual para las referencias de bloque; los colores siguen el tema actual y se adaptan automáticamente al modo claro/oscuro";
+            case "fr_FR": return "Choisissez un effet visuel pour les références de bloc ; les couleurs suivent le thème actuel et s'adaptent automatiquement au mode clair/sombre";
+            case "it_IT": return "Scegli un effetto visivo per i riferimenti di blocco; i colori seguono il tema attuale e si adattano automaticamente alla modalità chiara/scura";
+            case "en_US":
+            default: return "Pick a visual effect for block references; colors follow the current theme and adapt to light/dark mode automatically";
+        }
+    }
+    public get 引用效果样式() {
+        switch (this.lang) {
+            case "zh_CN": return "效果样式";
+            case "zh_CHT": return "效果樣式";
+            case "ja_JP": return "スタイル";
+            case "es_ES": return "Estilo";
+            case "fr_FR": return "Style";
+            case "it_IT": return "Stile";
+            case "en_US":
+            default: return "Effect style";
+        }
+    }
+    public get 引用效果无() {
+        switch (this.lang) {
+            case "zh_CN": return "无（思源默认）";
+            case "zh_CHT": return "無（思源默認）";
+            case "ja_JP": return "なし（SiYuan 標準）";
+            case "es_ES": return "Ninguno (predeterminado de SiYuan)";
+            case "fr_FR": return "Aucun (par défaut de SiYuan)";
+            case "it_IT": return "Nessuno (predefinito di SiYuan)";
+            case "en_US":
+            default: return "None (SiYuan default)";
+        }
+    }
+    public get 引用效果双方括号() {
+        switch (this.lang) {
+            case "zh_CN": return "双方括号 [[ ]]";
+            case "zh_CHT": return "雙方括號 [[ ]]";
+            case "ja_JP": return "二重括弧 [[ ]]";
+            case "es_ES": return "Doble corchete [[ ]]";
+            case "fr_FR": return "Doubles crochets [[ ]]";
+            case "it_IT": return "Doppie parentesi [[ ]]";
+            case "en_US":
+            default: return "Double brackets [[ ]]";
+        }
+    }
+    public get 引用效果链接图标() {
+        switch (this.lang) {
+            case "zh_CN": return "链接图标";
+            case "zh_CHT": return "鏈接圖標";
+            case "ja_JP": return "リンクアイコン";
+            case "es_ES": return "Icono de enlace";
+            case "fr_FR": return "Icône de lien";
+            case "it_IT": return "Icona collegamento";
+            case "en_US":
+            default: return "Link icon";
+        }
+    }
+    public get 引用效果悬停阴影() {
+        switch (this.lang) {
+            case "zh_CN": return "悬停阴影";
+            case "zh_CHT": return "懸停陰影";
+            case "ja_JP": return "ホバー時の影";
+            case "es_ES": return "Sombra al pasar el ratón";
+            case "fr_FR": return "Ombre au survol";
+            case "it_IT": return "Ombra al passaggio del mouse";
+            case "en_US":
+            default: return "Hover shadow";
+        }
+    }
+    public get 引用效果悬停高亮() {
+        switch (this.lang) {
+            case "zh_CN": return "悬停高亮";
+            case "zh_CHT": return "懸停高亮";
+            case "ja_JP": return "ホバー時のハイライト";
+            case "es_ES": return "Resaltado al pasar el ratón";
+            case "fr_FR": return "Surlignage au survol";
+            case "it_IT": return "Evidenziazione al passaggio del mouse";
+            case "en_US":
+            default: return "Hover highlight";
+        }
+    }
+    // 期1 □2 摘抄落点三档（2026-09-03 群反馈：MOUQIN 要源文档下方回归 + 650189 要总夹归拢）
+    public get 摘抄落点() {
+        switch (this.lang) {
+            case "zh_CN": return "摘抄落点";
+            case "zh_CHT": return "摘抄落點";
+            case "en_US":
+            default: return "Digest landing";
+        }
+    }
+    public get 落点集中归档() {
+        switch (this.lang) {
+            case "zh_CN": return "集中归档";
+            case "zh_CHT": return "集中歸檔";
+            case "en_US":
+            default: return "Centralized";
+        }
+    }
+    public get 落点源文档下方() {
+        switch (this.lang) {
+            case "zh_CN": return "源文档下方";
+            case "zh_CHT": return "源文檔下方";
+            case "en_US":
+            default: return "Under source doc";
+        }
+    }
+    public get 落点日记卡片() {
+        switch (this.lang) {
+            case "zh_CN": return "日记卡片";
+            case "zh_CHT": return "日記卡片";
+            case "en_US":
+            default: return "Daily card";
+        }
+    }
+    public get tip摘抄落点() {
+        switch (this.lang) {
+            case "zh_CN": return "摘抄文档的保存位置：\n集中归档=书摘抄进 prog-data/摘抄/digest-书名，非书文本进札记匣\n源文档下方=挂在来源书/文档之下（老版行为）\n日记卡片=并入当天日记文档";
+            case "zh_CHT": return "摘抄文檔的保存位置：\n集中歸檔=書摘抄進 prog-data/摘抄/digest-書名，非書文本進札記匣\n源文檔下方=掛在來源書/文檔之下（老版行為）\n日記卡片=併入當天日記文檔";
+            case "en_US":
+            default: return "Where digest docs are stored:\nCentralized = book digests into prog-data/摘抄/digest-<book>, free text into the note box\nUnder source doc = under the source book/doc (legacy behavior)\nDaily card = into today's daily note";
         }
     }
 }
