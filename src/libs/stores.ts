@@ -6,6 +6,27 @@ import { zipNways } from "./functional";
 import { events } from "./Events";
 import { BaseTomatoPlugin } from "./BaseTomatoPlugin";
 import { getGlobal, setGlobal } from "stonev5-utils";
+import { TomatoPluginConfig } from "./gconst";
+
+/** 设置 store 热更注册表（siyuan383 □3）：各工厂 load() 时自动登记「从新 cfg 重放
+ *  读值语义」的回调（重绑捕获引用 + store.set 新值）；storageHotReload 的
+ *  syncSettingsFromDisk 替换 plugin.settingCfg 后遍历刷值——响应式 UI 无闪断热更。 */
+const settingStoreRegistry = new Map<string, (cfg: TomatoSettings) => void>();
+/** keys 省略=全量刷；传入=只刷指定键（热更走 diff 键集，免未变值的多余通知/写盘） */
+export function reloadSettingStores(cfg: TomatoSettings, keys?: string[]) {
+    if (!cfg) return;
+    const entries = keys ? keys.map(k => [k, settingStoreRegistry.get(k)] as const) : settingStoreRegistry;
+    for (const [, reloadFrom] of entries) reloadFrom?.(cfg);
+}
+
+/** 热更替换 settingCfg 后重绑两处全局引用（review P1-1）：onload 期只在启动赋值一次，
+ *  不重绑=PairBarBox 位置记忆/MarkdownExport 增量水位线等 getTomatoPluginConfig()
+ *  消费者写孤儿旧对象，随后 write() 落盘新对象=静默丢写。钩子与保存链共用。 */
+export function rebindTomatoConfigRefs(plugin: BaseTomatoPlugin) {
+    setGlobal(TomatoPluginConfig, plugin.settingCfg);
+    const w = window.tomato_zZmqus5PtYRi;
+    if (w) w.pluginConfig = plugin.settingCfg;
+}
 
 export function writableWithGet<T>(t: T) {
     const store = writable(t);
@@ -33,6 +54,10 @@ export const storeNoteBox_selectedNoteType = (() => {
         load: (p: Plugin, s: TomatoSettings) => {
             plugin = p;
             settingCfg = s;
+            settingStoreRegistry.set("storeNoteBox_selectedNoteType", (cfg) => {
+                settingCfg = cfg;
+                store.set(cfg["storeNoteBox_selectedNoteType"]);
+            });
             store.set(s["storeNoteBox_selectedNoteType"]);
         },
         save: (v?: string) => {
@@ -64,6 +89,10 @@ export const storeNoteBox_keep = (() => {
         load: (p: Plugin, s: TomatoSettings) => {
             plugin = p;
             settingCfg = s;
+            settingStoreRegistry.set("storeNoteBox_keep", (cfg) => {
+                settingCfg = cfg; // subscribe 即时写盘走此引用，须先重绑再重放
+                store.set(cfg["storeNoteBox_keep"] ?? false);
+            });
             store.set(s["storeNoteBox_keep"] ?? false);
         },
     };
@@ -78,6 +107,10 @@ export const storeNoteBox_pin = (() => {
         load: (p: Plugin, s: TomatoSettings) => {
             plugin = p;
             settingCfg = s;
+            settingStoreRegistry.set("storeNoteBox_pin", (cfg) => {
+                settingCfg = cfg;
+                store.set(cfg["storeNoteBox_pin"] ?? false);
+            });
             store.set(s["storeNoteBox_pin"] ?? false);
         },
         save: (v: boolean) => {
@@ -121,6 +154,11 @@ export const storeNoteBox_recentText = (() => {
         load: (p: Plugin, s: TomatoSettings) => {
             plugin = p;
             settingCfg = s;
+            settingStoreRegistry.set("storeNoteBox_recentText", (cfg) => {
+                settingCfg = cfg;
+                store.set(cfg["storeNoteBox_recentText"] ?? []);
+                storeNoteBox_noteCount.set(get(store).length);
+            });
             store.set(s["storeNoteBox_recentText"] ?? []);
             storeNoteBox_noteCount.set(get(store).length);
         },
@@ -148,6 +186,10 @@ export const storeNoteBox_noteAreaText = (() => {
         load: (p: Plugin, s: TomatoSettings) => {
             plugin = p;
             settingCfg = s;
+            settingStoreRegistry.set("storeNoteBox_noteAreaText", (cfg) => {
+                settingCfg = cfg;
+                store.set(cfg["storeNoteBox_noteAreaText"] ?? "");
+            });
             store.set(s["storeNoteBox_noteAreaText"] ?? "");
         },
         save: () => {
@@ -168,6 +210,10 @@ function notebookStoreFactory(k = "storeNoteBox_selectedNotebook") {
         load: (p: Plugin, s: TomatoSettings) => {
             plugin = p;
             settingCfg = s;
+            settingStoreRegistry.set(k, (cfg) => {
+                settingCfg = cfg; // 重绑捕获引用（save 写它），再重放读值
+                store.set(cfg[k] ?? "");
+            });
             store.set(s[k] ?? "");
         },
         getOr: () => {
@@ -302,6 +348,12 @@ const settingFactory = <T>(key: TSK, defaultValue: T, file: string, _void: TSK) 
         },
         load(p: BaseTomatoPlugin) {
             plugin = p;
+            settingStoreRegistry.set(key as string, (cfg) => {
+                // 读值语义重放（与下方同款）：null 补默认写回 cfg，防后续搭车写回落旧值
+                const v = cfg[key] != null ? cfg[key] : defaultValue;
+                store.set(v as T);
+                cfg[key] = v as never;
+            });
             if (plugin.settingCfg[key] != null) {
                 store.set(plugin.settingCfg[key] as T);
             } else {
@@ -437,6 +489,9 @@ export const readingAddDeleteMenu = settingFactory("readingAddDeleteMenu", false
 // 悬浮球主控（关=球整体不出场，顶栏/状态栏点击回退打开面板）；hidden=用户隐藏标记（球菜单/入口 toggle）
 export const readingFloatBar = settingFactory("readingFloatBar", true, STORAGE_SETTINGS, null as TSK);
 export const readingFloatBallHidden = settingFactory("readingFloatBallHidden", false, STORAGE_SETTINGS, null as TSK);
+// 设点入闪卡（readpoint □2-B 复活 2026-09-08）：设点=原文块进闪卡+立即到期（复习卡=「回原文
+// 继续读」锚，与渐进复习流联动）；老版同开关名复活，翻新期存量 petal 值残留=正好无缝接回默认偏好
+export const readingAdd2Card = settingFactory("readingAdd2Card", true, STORAGE_SETTINGS, null as TSK);
 /** 球位置持久化：九宫格锚点(0-8)+像素偏移（ballGeometry 同款语义；anchor=5 中右默认，避让 recite 右下/渐进左下） */
 export interface RPBallPos {
     anchor: number; offsetX: number; offsetY: number;
@@ -686,8 +741,12 @@ export const digest2dailycard = settingFactory("digest2dailycard", false, STORAG
 export const digestLanding = settingFactory("digestLanding", "central", STORAGE_Prog_SETTINGS, null as TSK);
 // □3 制卡统一归置（2026-09-01 拍板方案 A）：默认制卡（⌥E/浮条制卡钮）并入当日 daily card
 // 文档；存量用户无此 key 读默认 true 即集中（发版 notes 说明），关掉回落 cards 夹旧路线
-// （cardUnderPiece 分叉保持原语义）
+// （cardUnderPiece 分叉保持原语义）。三档化（2026-09-07）后退役为迁移源（同 digest2dailycard）
 export const card2dailycard = settingFactory("card2dailycard", true, STORAGE_Prog_SETTINGS, null as TSK);
+// 制卡落点三档（2026-09-07 bear 拍板，与「摘抄落点」对称）：dailycard=当日 daily card 文档
+// （原 card2dailycard=true 语义，默认）/ dailynote=当天日记文档尾插 / cards=原 false 回落
+// （书下 cards 或源下 cards，cardUnderPiece 分叉保持原语义）；迁移见渐进 index.ts loadStore
+export const cardLanding = settingFactory("cardLanding", "dailycard", STORAGE_Prog_SETTINGS, null as TSK);
 // v5 火苗档位：每日目标片数（"1"/"3"/"5"，默认 3）——滚筒欠债=Σ max(0, 当日q−当日已读)
 export const dailyQuota = settingFactory("dailyQuota", "3", STORAGE_Prog_SETTINGS, null as TSK);
 // □3 右键退役默认关（2026-09-01 用户拍板：浮条已覆盖同款能力，右键默认清爽；设置项
