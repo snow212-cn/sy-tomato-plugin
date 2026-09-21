@@ -7183,10 +7183,10 @@ export class TomatoI18n extends TomatoI18nABC {
 
     public get tip摘抄归总夹() {
         switch (this.lang) {
-            case "zh_CN": return "本次落点归摘抄总夹（非书文本归札记匣），不改全局档";
-            case "zh_CHT": return "本次落點歸摘抄總夾（非書文本歸札記匣），不改全局檔";
+            case "zh_CN": return "本次落点归摘抄总夹（书/非书统一），不改全局档";
+            case "zh_CHT": return "本次落點歸摘抄總夾（書/非書統一），不改全局檔";
             case "en_US":
-            default: return "This one lands in the digest hub (notes box for non-book); global setting untouched";
+            default: return "This one lands in the digest hub (book and non-book alike); global setting untouched";
         }
     }
 
@@ -8057,10 +8057,10 @@ export class TomatoI18n extends TomatoI18nABC {
     }
     public get 路线摘抄再摘抄() {
         switch (this.lang) {
-            case "zh_CN": return "再摘抄：摘抄上再摘，落札记匣";
-            case "zh_CHT": return "再摘抄：摘抄上再摘，落札記匣";
+            case "zh_CN": return "再摘抄：摘抄上再摘，落点随「摘抄落点」档";
+            case "zh_CHT": return "再摘抄：摘抄上再摘，落點隨「摘抄落點」檔";
             case "en_US":
-            default: return "Re-digest: digest a digest, lands in the note box";
+            default: return "Re-digest: digest a digest; landing follows the digest-landing setting";
         }
     }
     // □2 片尾收束卡（digest 尾卡「再摘抄」钮短标签，长说明走上面路线键）
@@ -8117,10 +8117,10 @@ export class TomatoI18n extends TomatoI18nABC {
     }
     public get 路线自由摘抄() {
         switch (this.lang) {
-            case "zh_CN": return "摘抄：摘当前文档，非书文本落札记匣";
-            case "zh_CHT": return "摘抄：摘當前文檔，非書文本落札記匣";
+            case "zh_CN": return "摘抄：摘当前文档，非书文本同落摘抄总夹";
+            case "zh_CHT": return "摘抄：摘當前文檔，非書文本同落摘抄總夾";
             case "en_US":
-            default: return "Digest: digests of non-book text land in the note box";
+            default: return "Digest: digests of non-book text land in the digest hub too";
         }
     }
     public get 路线自由加书() {
@@ -10508,6 +10508,24 @@ export class TomatoI18n extends TomatoI18nABC {
             default: return "Daily card folder";
         }
     }
+    // 摘抄落点五档（liulfb □1：再摘抄目录树连续两档，2026-09-21）——以发起文档为锚，
+    // 书/非书通用；再摘抄场景（发起=摘抄文档）即「多次摘抄聚一层 / SM 式知识树」
+    public get 落点同级文档() {
+        switch (this.lang) {
+            case "zh_CN": return "当前文档同级";
+            case "zh_CHT": return "當前文檔同級";
+            case "en_US":
+            default: return "Sibling of current doc";
+        }
+    }
+    public get 落点子文档() {
+        switch (this.lang) {
+            case "zh_CN": return "当前文档子文档";
+            case "zh_CHT": return "當前文檔子文檔";
+            case "en_US":
+            default: return "Child of current doc";
+        }
+    }
     // 制卡落点三档（2026-09-07，与摘抄落点族对称）
     public get 制卡落点() {
         switch (this.lang) {
@@ -10543,10 +10561,10 @@ export class TomatoI18n extends TomatoI18nABC {
     }
     public get tip摘抄落点() {
         switch (this.lang) {
-            case "zh_CN": return "摘抄文档的保存位置：\n集中归档=书摘抄进 prog-data/摘抄/digest-书名，非书文本进札记匣（匣内按源文档 digest-源文档名 分夹归集）\n源文档下方=挂在来源书/文档之下（老版行为）\nDaily card 目录=落进发起文档所在笔记本的 daily card/年/月 目录（按月归档，不看制卡侧的闪卡笔记本设置）";
-            case "zh_CHT": return "摘抄文檔的保存位置：\n集中歸檔=書摘抄進 prog-data/摘抄/digest-書名，非書文本進札記匣（匣內按源文檔 digest-源文檔名 分夾歸集）\n源文檔下方=掛在來源書/文檔之下（老版行為）\nDaily card 目錄=落進發起文檔所在筆記本的 daily card/年/月 目錄（按月歸檔，不看製卡側的閃卡筆記本設置）";
+            case "zh_CN": return "摘抄文档的保存位置：\n集中归档=书/非书统一进 prog-data/摘抄/digest-来源名（书=digest-书名、非书=digest-源文档名，集中统一管理）\n源文档下方=挂在来源书/文档之下（老版行为）\nDaily card 目录=落进发起文档所在笔记本的 daily card/年/月 目录（按月归档，不看制卡侧的闪卡笔记本设置）\n当前文档同级=挂在发起文档旁边（不建夹，多次摘抄聚一层）\n当前文档子文档=直接挂在发起文档之下（不建夹，SM 式知识树）";
+            case "zh_CHT": return "摘抄文檔的保存位置：\n集中歸檔=書/非書統一進 prog-data/摘抄/digest-來源名（書=digest-書名、非書=digest-源文檔名，集中統一管理）\n源文檔下方=掛在來源書/文檔之下（老版行為）\nDaily card 目錄=落進發起文檔所在筆記本的 daily card/年/月 目錄（按月歸檔，不看製卡側的閃卡筆記本設置）\n當前文檔同級=掛在發起文檔旁邊（不建夾，多次摘抄聚一層）\n當前文檔子文檔=直接掛在發起文檔之下（不建夾，SM 式知識樹）";
             case "en_US":
-            default: return "Where digest docs are stored:\nCentralized = book digests into prog-data/摘抄/digest-<book>, free text into the note box (grouped per source doc as digest-<source>)\nUnder source doc = under the source book/doc (legacy behavior)\nDaily card folder = into daily card/<year>/<month> under the source doc's notebook (ignores the card side's flashcard notebook setting)";
+            default: return "Where digest docs are stored:\nCentralized = book and non-book alike into prog-data/摘抄/digest-<source> (digest-<book> for books, digest-<source doc> for the rest, unified management)\nUnder source doc = under the source book/doc (legacy behavior)\nDaily card folder = into daily card/<year>/<month> under the source doc's notebook (ignores the card side's flashcard notebook setting)\nSibling of current doc = next to the doc you digest from (no folder, re-digests stay on one level)\nChild of current doc = directly under the doc you digest from (no folder, SM-style knowledge tree)";
         }
     }
     // graphbox 期1 大文档三档（2026-09-03）：骨架提示/完整加载确认/轮询降级/加载态
@@ -11096,13 +11114,16 @@ export class TomatoI18n extends TomatoI18nABC {
         }
     }
 
-    // rollerquota □1 全满额对症提示（nextBook null 且达量集非空=不再误报空书架）
-    public get 今日轮转书已全部读满() {
+    // rollerquota □1 全满额对症提示（nextBook null 且达量集非空=不再误报空书架）。
+    // progfeatpool 件2（B 口径 2026-09-21）后达量集含手动书：计量=当日轮到次数（与
+    // 切片书共用档位，次日自动回池），文案口径随键名说明；旧键「今日轮转书已全部读满」
+    // 唯一消费者已换新键，删除防死键
+    public get 今日轮转书已全部读满含手动书() {
         switch (this.lang) {
-            case "zh_CN": return "今日的书都已读满档位，明天再来；想连读可点书卡续读";
-            case "zh_CHT": return "今日的書都已讀滿檔位，明天再來；想連讀可點書卡續讀";
+            case "zh_CN": return "今日的书都已轮满档位（手动书按当日轮到次数计），明天再来；想连读可点书卡续读";
+            case "zh_CHT": return "今日的書都已輪滿檔位（手動書按當日輪到次數計），明天再來；想連讀可點書卡續讀";
             case "en_US":
-            default: return "All books have hit today's piece limit — come back tomorrow, or tap a book card to keep reading";
+            default: return "All books have hit today's limit (manual books count per serve) — come back tomorrow, or tap a book card to keep reading";
         }
     }
 
@@ -11825,6 +11846,173 @@ export class TomatoI18n extends TomatoI18nABC {
         if (skipped > 0) s += zh ? `，${skipped} 篇无内容已跳过` : `, ${skipped} empty skipped`;
         if (failed > 0) s += zh ? `，${failed} 篇失败请重试` : `, ${failed} failed`;
         return s;
+    }
+
+    // ============ progfeatpool 件4 批量整理摘抄（入素材池/换籍 UI 化） ============
+
+    /** 书卡右键菜单项（打开该书摘抄批量选择器） */
+    public get 批量整理摘抄() {
+        switch (this.lang) {
+            case "zh_CN": return "批量整理摘抄…";
+            case "zh_CHT": return "批次整理摘抄…";
+            case "en_US":
+            default: return "Batch organize digests…";
+        }
+    }
+
+    /** 摘抄子排钮三行制 tooltip：第一行短名 */
+    public get 批量整理() {
+        switch (this.lang) {
+            case "zh_CN": return "批量整理";
+            case "zh_CHT": return "批次整理";
+            case "en_US":
+            default: return "Batch organize";
+        }
+    }
+
+    public get tip批量整理() {
+        switch (this.lang) {
+            case "zh_CN": return "勾选本书摘抄，批量复制或换籍进写作书素材池";
+            case "zh_CHT": return "勾選本書摘抄，批次複製或換籍進寫作書素材池";
+            case "en_US":
+            default: return "Select digests of this book, then copy or move them into a writing book's material pool in bulk";
+        }
+    }
+
+    /** Dialog 头部说明行（信息平铺不藏 hover）；cap=单批上限（POOL_BATCH_CAP 注入防漂移） */
+    public 批量整理摘抄说明(cap: number) {
+        switch (this.lang) {
+            case "zh_CN": return `勾选摘抄，批量复制（留底）或换籍（移动）进写作书素材池，单批至多 ${cap} 篇`;
+            case "zh_CHT": return `勾選摘抄，批次複製（留底）或換籍（移動）進寫作書素材池，單批至多 ${cap} 篇`;
+            case "en_US":
+            default: return `Select digests to copy (keep original) or move into a writing book's material pool, up to ${cap} per batch`;
+        }
+    }
+
+    /** >100 UI 侧先拦提示（引擎壳抛错兜底同口径：按去重后计数） */
+    public 批量超上限提示(n: number, cap: number) {
+        switch (this.lang) {
+            case "zh_CN": return `本批 ${n} 篇超出单批上限 ${cap} 篇，请分批整理（建议每批 50~100 篇）`;
+            case "zh_CHT": return `本批 ${n} 篇超出單批上限 ${cap} 篇，請分批整理（建議每批 50~100 篇）`;
+            case "en_US":
+            default: return `This batch has ${n} digests, over the ${cap} per-batch limit. Split it (50-100 per batch recommended)`;
+        }
+    }
+
+    public get 批量复制入池() {
+        switch (this.lang) {
+            case "zh_CN": return "批量复制入池";
+            case "zh_CHT": return "批次複製入池";
+            case "en_US":
+            default: return "Copy to pool";
+        }
+    }
+
+    public get 批量换籍() {
+        switch (this.lang) {
+            case "zh_CN": return "批量换籍";
+            case "zh_CHT": return "批次換籍";
+            case "en_US":
+            default: return "Move to pool";
+        }
+    }
+
+    /** 换籍前 confirm（移动=摘抄文档迁出本书清单，破坏性须确认；DigestAllDialog
+     *  「移动素材确认」同款纪律） */
+    public 换籍摘抄确认(n: number) {
+        switch (this.lang) {
+            case "zh_CN": return `换籍将把 ${n} 篇摘抄文档移入目标书素材池（本书清单中移除），确认继续？`;
+            case "zh_CHT": return `換籍將把 ${n} 篇摘抄文件移入目標書素材池（本書清單中移除），確認繼續？`;
+            case "en_US":
+            default: return `Move ${n} digest doc(s) into the target book's material pool (removed from this book's list)?`;
+        }
+    }
+
+    /** 跑批中逐项进度（引擎串行壳 log 注入解析驱动） */
+    public 批量整理进度(done: number, total: number) {
+        switch (this.lang) {
+            case "zh_CN": return `整理中 ${done}/${total}`;
+            case "zh_CHT": return `整理中 ${done}/${total}`;
+            case "en_US":
+            default: return `Organizing ${done}/${total}`;
+        }
+    }
+
+    /** 回执 headline：copy/move 动词差异化（引擎收尾 log 直译） */
+    public 批量复制入池汇总(ok: number, skipped: number, failed: number) {
+        const zh = this.lang === "zh_CN" || this.lang === "zh_CHT";
+        let s = zh ? `已入池 ${ok} 篇` : `Copied ${ok} to pool`;
+        if (skipped > 0) s += zh ? `，跳过 ${skipped} 篇` : `, ${skipped} skipped`;
+        if (failed > 0) s += zh ? `，失败 ${failed} 篇` : `, ${failed} failed`;
+        return s;
+    }
+
+    public 批量换籍汇总(ok: number, skipped: number, failed: number) {
+        const zh = this.lang === "zh_CN" || this.lang === "zh_CHT";
+        let s = zh ? `已换籍 ${ok} 篇` : `Moved ${ok} to pool`;
+        if (skipped > 0) s += zh ? `，跳过 ${skipped} 篇` : `, ${skipped} skipped`;
+        if (failed > 0) s += zh ? `，失败 ${failed} 篇` : `, ${failed} failed`;
+        return s;
+    }
+
+    /** copy 回执差异化重试行（引擎 log「重试请只传返回值 failed 里的 id（复制非幂等，
+     *  整批重跑会双份）」直译）+ 配套重试钮短标 */
+    public get 重试只传失败篇提示() {
+        switch (this.lang) {
+            case "zh_CN": return "复制非幂等：重试只传失败篇的 id，整批重跑会产生双份副本";
+            case "zh_CHT": return "複製非冪等：重試只傳失敗篇的 id，整批重跑會產生雙份副本";
+            case "en_US":
+            default: return "Copy is not idempotent: retry with only the failed ids — rerunning the whole batch would duplicate copies";
+        }
+    }
+
+    public get 重试失败篇() {
+        switch (this.lang) {
+            case "zh_CN": return "重试失败篇";
+            case "zh_CHT": return "重試失敗篇";
+            case "en_US":
+            default: return "Retry failed";
+        }
+    }
+
+    /** move 回执差异化重试行（引擎 log「换籍幂等，整批重跑安全（已在目标书的自动
+     *  跳过，不会重复搬）」直译）+ 配套重跑钮短标 */
+    public get 换籍整批重跑安全提示() {
+        switch (this.lang) {
+            case "zh_CN": return "换籍幂等：整批重跑安全（已在目标书的自动跳过，不会重复搬）";
+            case "zh_CHT": return "換籍冪等：整批重跑安全（已在目標書的自動跳過，不會重複搬）";
+            case "en_US":
+            default: return "Move is idempotent: rerunning the whole batch is safe (already-moved ones are skipped, never duplicated)";
+        }
+    }
+
+    public get 整批重跑() {
+        switch (this.lang) {
+            case "zh_CN": return "整批重跑";
+            case "zh_CHT": return "整批重跑";
+            case "en_US":
+            default: return "Rerun batch";
+        }
+    }
+
+    /** 目标书一级菜单空态（无可用写作书=无从选目标） */
+    public get 还没有写作书可入池() {
+        switch (this.lang) {
+            case "zh_CN": return "还没有写作书可入池（先创建写作书）";
+            case "zh_CHT": return "還沒有寫作書可入池（先建立寫作書）";
+            case "en_US":
+            default: return "No writing book available yet (create one first)";
+        }
+    }
+
+    /** 子排 batchpool 钮 $bookID 空窗兜底（理论不可达：free 态钮不上排——防御分支文案） */
+    public get 无法识别所属书() {
+        switch (this.lang) {
+            case "zh_CN": return "无法识别本文档所属的书";
+            case "zh_CHT": return "無法識別本文檔所屬的書";
+            case "en_US":
+            default: return "Cannot resolve the book this document belongs to";
+        }
     }
 
     // ============ matflow（0914 □2+□5 合拍）素材池出口+翻素材+护卡断句 ============
@@ -13034,6 +13222,19 @@ export class TomatoI18n extends TomatoI18nABC {
             default: return "Jump to bottom when opening floating doc";
         }
     }
+    /** fballfb □3：悬浮窗形态球驻留开关——开=点球开窗球常驻再点关窗；关=现状「开窗即消失」 */
+    public get 悬浮文档打开后保留悬浮球() {
+        switch (this.lang) {
+            case "zh_CN": return "悬浮文档打开后保留悬浮球";
+            case "zh_CHT": return "懸浮文檔打開後保留懸浮球";
+            case "ja_JP": return "フローティングドキュメントを開いた後もフローティングボールを残す";
+            case "es_ES": return "Mantener el balón flotante al abrir el documento flotante";
+            case "fr_FR": return "Conserver la balle flottante après l'ouverture du document flottant";
+            case "it_IT": return "Mantieni la palla flottante dopo l'apertura del documento flottante";
+            case "en_US":
+            default: return "Keep the floating ball after opening the floating doc";
+        }
+    }
     public get 请先绑定文档到悬浮球() {
         switch (this.lang) {
             case "zh_CN": return "请先绑定文档到悬浮球";
@@ -13104,6 +13305,43 @@ export class TomatoI18n extends TomatoI18nABC {
             case "it_IT": return "Nessun punto di lettura";
             case "en_US":
             default: return "No reading points yet";
+        }
+    }
+    // 尾巴钮（横滚区末尾「全部 N 个（· X 旧版）」）：全量面板入口可发现性补强
+    public get 查看全部阅读点() {
+        switch (this.lang) {
+            case "zh_CN": return "查看全部阅读点";
+            case "zh_CHT": return "查看全部閱讀點";
+            case "ja_JP": return "すべての読書ポイントを表示";
+            case "es_ES": return "Ver todos los puntos de lectura";
+            case "fr_FR": return "Voir tous les points de lecture";
+            case "it_IT": return "Visualizza tutti i punti di lettura";
+            case "en_US":
+            default: return "View all reading points";
+        }
+    }
+    public 全部N个(n: number) {
+        switch (this.lang) {
+            case "zh_CN": return `全部 ${n} 个`;
+            case "zh_CHT": return `全部 ${n} 個`;
+            case "ja_JP": return `すべて (${n})`;
+            case "es_ES": return `Todos (${n})`;
+            case "fr_FR": return `Tous (${n})`;
+            case "it_IT": return `Tutti (${n})`;
+            case "en_US":
+            default: return `All ${n}`;
+        }
+    }
+    public X旧版(n: number) {
+        switch (this.lang) {
+            case "zh_CN": return `${n} 旧版`;
+            case "zh_CHT": return `${n} 舊版`;
+            case "ja_JP": return `旧版 ${n}`;
+            case "es_ES": return `${n} antiguos`;
+            case "fr_FR": return `${n} anciens`;
+            case "it_IT": return `${n} vecchi`;
+            case "en_US":
+            default: return `${n} legacy`;
         }
     }
     public get 刚刚() {
@@ -13301,6 +13539,51 @@ export class TomatoI18n extends TomatoI18nABC {
             case "ja_JP": return "同期後に公式速記を日記へ自動移動";
             case "en_US":
             default: return "Auto-move official quick notes to diary after sync";
+        }
+    }
+    // □4 速记落块形态三态（fballfb 2026-09-21）：设置 select 行（标签+三个选项）
+    public get 速记落块形态() {
+        switch (this.lang) {
+            case "zh_CN": return "速记落块形态";
+            case "zh_CHT": return "速記落塊形態";
+            case "es_ES": return "Forma de bloque de notas rápidas";
+            case "fr_FR": return "Forme de bloc des notes rapides";
+            case "ja_JP": return "速記のブロック形式";
+            case "en_US":
+            default: return "Quick note block form";
+        }
+    }
+    public get 速记落块形态超级块() {
+        switch (this.lang) {
+            case "zh_CN": return "超级块";
+            case "zh_CHT": return "超級塊";
+            case "es_ES": return "Superbloque";
+            case "fr_FR": return "Superbloc";
+            case "ja_JP": return "スーパーブロック";
+            case "en_US":
+            default: return "Superblock";
+        }
+    }
+    public get 速记落块形态段落块() {
+        switch (this.lang) {
+            case "zh_CN": return "段落块";
+            case "zh_CHT": return "段落塊";
+            case "es_ES": return "Párrafo";
+            case "fr_FR": return "Paragraphe";
+            case "ja_JP": return "段落";
+            case "en_US":
+            default: return "Paragraph";
+        }
+    }
+    public get 速记落块形态列表项块() {
+        switch (this.lang) {
+            case "zh_CN": return "列表项块";
+            case "zh_CHT": return "列表項塊";
+            case "es_ES": return "Elemento de lista";
+            case "fr_FR": return "Élément de liste";
+            case "ja_JP": return "リスト項目";
+            case "en_US":
+            default: return "List item";
         }
     }
     // □3 片段级复制（dailynote-pipeline 2026-09-06）：工具条钮 tip+完成 pushMsg+设置行
