@@ -3857,6 +3857,79 @@ export class TomatoI18n extends TomatoI18nABC {
         }
     }
 
+    // need-0924-01 到期复访「它来找你」：状态栏 ✧ 角标 + 单张卡片流（鸟 09-24 拍板）
+    public get 到期复访() {
+        switch (this.lang) {
+            case "zh_CN": return "到期复访";
+            case "zh_CHT": return "到期複訪";
+            case "en_US":
+            default: return "Due revisits";
+        }
+    }
+
+    public 到期复访N条(n: number) {
+        switch (this.lang) {
+            case "zh_CN": return `到期复访 ${n} 条，点击逐张处理`;
+            case "zh_CHT": return `到期複訪 ${n} 條，點擊逐張處理`;
+            case "en_US":
+            default: return `${n} revisit(s) due — click to process`;
+        }
+    }
+
+    public 剩N张(n: number) {
+        switch (this.lang) {
+            case "zh_CN": return `剩 ${n} 张`;
+            case "zh_CHT": return `剩 ${n} 張`;
+            case "en_US":
+            default: return `${n} left`;
+        }
+    }
+
+    public 逾期N天(n: number) {
+        switch (this.lang) {
+            case "zh_CN": return `逾期 ${n} 天`;
+            case "zh_CHT": return `逾期 ${n} 天`;
+            case "en_US":
+            default: return `${n} day(s) overdue`;
+        }
+    }
+
+    public get 今天到期() {
+        switch (this.lang) {
+            case "zh_CN": return "今天到期";
+            case "zh_CHT": return "今天到期";
+            case "en_US":
+            default: return "Due today";
+        }
+    }
+
+    public get 复访已清空() {
+        switch (this.lang) {
+            case "zh_CN": return "复访已清空";
+            case "zh_CHT": return "複訪已清空";
+            case "en_US":
+            default: return "All revisits cleared";
+        }
+    }
+
+    public get 看原文() {
+        switch (this.lang) {
+            case "zh_CN": return "看原文";
+            case "zh_CHT": return "看原文";
+            case "en_US":
+            default: return "View source";
+        }
+    }
+
+    public get 无到期复访() {
+        switch (this.lang) {
+            case "zh_CN": return "无到期复访";
+            case "zh_CHT": return "無到期複訪";
+            case "en_US":
+            default: return "No due revisits";
+        }
+    }
+
     public get 不再推送复访确认() {
         switch (this.lang) {
             case "zh_CN": return "移除该文档所有摘抄的复访调度？";
@@ -4335,6 +4408,36 @@ export class TomatoI18n extends TomatoI18nABC {
             case "zh_CHT": return `來源：${name}`;
             case "en_US":
             default: return `From: ${name}`;
+        }
+    }
+
+    /** 胶囊 hover 来源提示的失败态（getBlockInfo null=源在关闭笔记本/已删；revsrcguard 批） */
+    public get 来源不可达() {
+        switch (this.lang) {
+            case "zh_CN": return "来源不可达（可能在已关闭的笔记本中）";
+            case "zh_CHT": return "來源不可達（可能在已關閉的筆記本中）";
+            case "en_US":
+            default: return "Source unreachable (notebook may be closed)";
+        }
+    }
+
+    /** 来源胶囊 hover 小字提示：源在已关闭的笔记本（need-0925-02，revsrcguard 长条撤除后承接） */
+    public get 来源在关闭的笔记本() {
+        switch (this.lang) {
+            case "zh_CN": return "来源在关闭的笔记本";
+            case "zh_CHT": return "來源在關閉的筆記本";
+            case "en_US":
+            default: return "Source is in a closed notebook";
+        }
+    }
+
+    /** 火苗 tooltip 尾行（revsrcguard 同批 650189 09-23 帖）：今日待轮转书数 */
+    public 今日待轮转N本(n: number) {
+        switch (this.lang) {
+            case "zh_CN": return `今日待轮转 ${n} 本`;
+            case "zh_CHT": return `今日待輪轉 ${n} 本`;
+            case "en_US":
+            default: return `${n} book${n === 1 ? "" : "s"} in rotation`;
         }
     }
 
@@ -6440,12 +6543,12 @@ export class TomatoI18n extends TomatoI18nABC {
         }
     }
 
-    public get 归拢老数据() {
+    public get 归拢摘抄() {
         switch (this.lang) {
-            case "zh_CN": return "归拢老数据";
-            case "zh_CHT": return "歸攏老數據";
+            case "zh_CN": return "归拢摘抄";
+            case "zh_CHT": return "歸攏摘抄";
             case "en_US":
-            default: return "Consolidate legacy data";
+            default: return "Consolidate excerpts";
         }
     }
 
@@ -6499,6 +6602,60 @@ export class TomatoI18n extends TomatoI18nABC {
                     (failed ? ` (${failed} failed)` : "") +
                     `, cleaned ${cleaned} empty piece dirs` +
                     (skipped ? `, ${skipped} diary excerpts untouched` : "");
+        }
+    }
+
+    // ===== need-0924-02 归拢后悔药：反向「放回源文档下」+ 落点联动搬迁确认 =====
+    public get 放回源文档下() {
+        switch (this.lang) {
+            case "zh_CN": return "放回源文档下";
+            case "zh_CHT": return "放回源文檔下";
+            case "en_US":
+            default: return "Restore to sources";
+        }
+    }
+    public get 放回中() {
+        switch (this.lang) {
+            case "zh_CN": return "放回中…";
+            case "zh_CHT": return "放回中…";
+            case "en_US":
+            default: return "Restoring…";
+        }
+    }
+    public 放回结果(moved: number, names: string[]) {
+        switch (this.lang) {
+            case "zh_CN":
+            case "zh_CHT":
+                return `放回 ${moved} 个摘抄夹` +
+                    (names.length ? `，未动 ${names.length} 个（无锚定或来源已删）：${names.join("、")}` : "");
+            case "en_US":
+            default:
+                return `Restored ${moved} excerpt folders` +
+                    (names.length ? `, ${names.length} untouched (no anchor or source gone): ${names.join(", ")}` : "");
+        }
+    }
+    public get tip设置放回() {
+        switch (this.lang) {
+            case "zh_CN": return "把摘抄总夹里的摘抄夹按锚定的来源搬回各书/源文档正下方（与「归拢摘抄」反向）；无锚定或来源已删的夹不动";
+            case "zh_CHT": return "把摘抄總夾裡的摘抄夾按錨定的來源搬回各書/源文檔正下方（與「歸攏摘抄」反向）；無錨定或來源已刪的夾不動";
+            case "en_US":
+            default: return "Move excerpt folders in the digest hub back under their anchored source books/docs (reverse of Consolidate); folders without an anchor or with a deleted source stay";
+        }
+    }
+    public get 落点搬总夹确认() {
+        switch (this.lang) {
+            case "zh_CN": return "摘抄落点已改为集中归档。要把现有的摘抄夹一起搬进摘抄总夹吗？（不搬也可以，落点只管新摘抄的保存位置）";
+            case "zh_CHT": return "摘抄落點已改為集中歸檔。要把現有的摘抄夾一起搬進摘抄總夾嗎？（不搬也可以，落點只管新摘抄的保存位置）";
+            case "en_US":
+            default: return "Digest landing changed to centralized. Move existing excerpt folders into the digest hub too? (Skipping is fine — landing only affects new excerpts)";
+        }
+    }
+    public get 落点放回确认() {
+        switch (this.lang) {
+            case "zh_CN": return "摘抄落点已改为源文档下方。要把摘抄总夹里现有的摘抄夹一起放回各来源书/文档正下方吗？（不搬也可以，落点只管新摘抄的保存位置）";
+            case "zh_CHT": return "摘抄落點已改為源文檔下方。要把摘抄總夾裡現有的摘抄夾一起放回各來源書/文檔正下方嗎？（不搬也可以，落點只管新摘抄的保存位置）";
+            case "en_US":
+            default: return "Digest landing changed to under source doc. Restore existing excerpt folders from the digest hub back under their sources too? (Skipping is fine — landing only affects new excerpts)";
         }
     }
 
@@ -6812,6 +6969,34 @@ export class TomatoI18n extends TomatoI18nABC {
             case "zh_CHT": return "這本書還沒有寫作槽——先在目錄裡規劃槽位";
             case "en_US":
             default: return "No writing slot yet — plan slots in the outline first";
+        }
+    }
+
+    // need-0926-06 槽树面板（本书槽/入槽选槽三处同构）：搜索占位/收回钮/收回 tip
+    public get 搜索槽名占位() {
+        switch (this.lang) {
+            case "zh_CN": return "搜索槽名…";
+            case "zh_CHT": return "搜索槽名…";
+            case "en_US":
+            default: return "Search slots…";
+        }
+    }
+
+    public get 槽树收回钮() {
+        switch (this.lang) {
+            case "zh_CN": return "收回";
+            case "zh_CHT": return "收回";
+            case "en_US":
+            default: return "Reset";
+        }
+    }
+
+    public get tip槽树收回() {
+        switch (this.lang) {
+            case "zh_CN": return "一键收回：折叠记忆清零，恢复只展开第一层";
+            case "zh_CHT": return "一鍵收回：折疊記憶清零，恢復只展開第一層";
+            case "en_US":
+            default: return "Collapse all back to the first level (clears fold memory)";
         }
     }
 
@@ -7967,6 +8152,47 @@ export class TomatoI18n extends TomatoI18nABC {
             case "zh_CHT": return "下一個分片：翻頁不刪，片留作草稿，同樣計數";
             case "en_US":
             default: return "Page on: keep this piece as draft, also counts";
+        }
+    }
+    // need-0925-01 片尾「建下一片」（读满档位闸拦停的绕行）按钮族：label+tip+两 toast
+    public get 建下一片() {
+        switch (this.lang) {
+            case "zh_CN": return "建下一片";
+            case "zh_CHT": return "建下一片";
+            case "en_US":
+            default: return "Pre-build next";
+        }
+    }
+    public get 路线片建下一片() {
+        switch (this.lang) {
+            case "zh_CN": return "建下一片：只建文档不打开不计读，读满被拦时可从文档树手动直达；明天轮转自动接上这篇";
+            case "zh_CHT": return "建下一片：只建文檔不打開不計讀，讀滿被攔時可從文檔樹手動直達；明天輪轉自動接上這篇";
+            case "en_US":
+            default: return "Pre-build next piece: create only, no open, no count — reach it from the doc tree when gated; rotation picks it up tomorrow";
+        }
+    }
+    public get 已建好下一片() {
+        switch (this.lang) {
+            case "zh_CN": return "已建好下一片，可从文档树打开";
+            case "zh_CHT": return "已建好下一片，可從文檔樹打開";
+            case "en_US":
+            default: return "Next piece created — open it from the doc tree";
+        }
+    }
+    public get 已是最后一片() {
+        switch (this.lang) {
+            case "zh_CN": return "已是最后一片";
+            case "zh_CHT": return "已是最後一片";
+            case "en_US":
+            default: return "Already the last piece";
+        }
+    }
+    public get 下一片暂未就绪() {
+        switch (this.lang) {
+            case "zh_CN": return "下一片暂未就绪，稍后再点";
+            case "zh_CHT": return "下一片暫未就緒，稍後再點";
+            case "en_US":
+            default: return "Next piece not ready yet, try again later";
         }
     }
     public get 路线组留点什么() {
@@ -9277,6 +9503,32 @@ export class TomatoI18n extends TomatoI18nABC {
             default: return "Digest cards no longer get a \"digested from\" backtrace ref line";
         }
     }
+    public get tip设置提取回溯() {
+        switch (this.lang) {
+            case "zh_CN": return "开启后「提取所有分片的笔记」产物不再附跳转原文的星号链接";
+            case "zh_CHT": return "開啟後「提取所有分片的筆記」產物不再附跳轉原文的星號鏈接";
+            case "en_US":
+            default: return "Extract-all results no longer get the asterisk links jumping back to source blocks";
+        }
+    }
+    // need-0927-04 楼20 拍板①：提取到底（⇧⌥R）/提取笔记（⌘F5）的星号回链开关 tip
+    public get tip设置笔记回溯() {
+        switch (this.lang) {
+            case "zh_CN": return "开启后「提取笔记到底部」「提取笔记」产物不再附跳转原文的星号链接（提取全部另受上一开关控制）";
+            case "zh_CHT": return "開啟後「提取筆記到底部」「提取筆記」產物不再附跳轉原文的星號鏈接（提取全部另受上一開關控制）";
+            case "en_US":
+            default: return "Extract-to-bottom and Extract-notes results no longer get the asterisk backlinks (extract-all has its own switch above)";
+        }
+    }
+    // need-0927-04 楼20 拍板②：条间空行开关 tip
+    public get tip设置条间空行() {
+        switch (this.lang) {
+            case "zh_CN": return "开启后提取产物条与条之间不再插空行（默认空行分隔，更易阅读）";
+            case "zh_CHT": return "開啟後提取產物條與條之間不再插空行（默認空行分隔，更易閱讀）";
+            case "en_US":
+            default: return "Extracted entries are stacked without blank lines between them (blank-line separation is the default)";
+        }
+    }
     public get tip设置dailycard() {
         switch (this.lang) {
             case "zh_CN": return "摘抄落进当天日记的 dailycard 目录，默认落 prog-data 书摘抄夹";
@@ -10535,16 +10787,9 @@ export class TomatoI18n extends TomatoI18nABC {
             default: return "Daily card folder";
         }
     }
-    // 摘抄落点五档（liulfb □1：再摘抄目录树连续两档，2026-09-21）——以发起文档为锚，
-    // 书/非书通用；再摘抄场景（发起=摘抄文档）即「多次摘抄聚一层 / SM 式知识树」
-    public get 落点同级文档() {
-        switch (this.lang) {
-            case "zh_CN": return "当前文档同级";
-            case "zh_CHT": return "當前文檔同級";
-            case "en_US":
-            default: return "Sibling of current doc";
-        }
-    }
+    // 摘抄落点 child 档（liulfb □1：再摘抄目录树连续，2026-09-21）——以发起文档为锚，
+    // 书/非书通用；再摘抄场景（发起=摘抄文档）即「SM 式知识树」。
+    // needs0923-01 砍 sibling 档：getter 已删（存量设置值 loadStore 迁移 source）
     public get 落点子文档() {
         switch (this.lang) {
             case "zh_CN": return "当前文档子文档";
@@ -10588,10 +10833,10 @@ export class TomatoI18n extends TomatoI18nABC {
     }
     public get tip摘抄落点() {
         switch (this.lang) {
-            case "zh_CN": return "摘抄文档的保存位置：\n集中归档=书/非书统一进 prog-data/摘抄/digest-来源名（书=digest-书名、非书=digest-源文档名，集中统一管理）\n源文档下方=挂在来源书/文档之下（老版行为）\nDaily card 目录=落进发起文档所在笔记本的 daily card/年/月 目录（按月归档，不看制卡侧的闪卡笔记本设置）\n当前文档同级=挂在发起文档旁边（不建夹，多次摘抄聚一层）\n当前文档子文档=直接挂在发起文档之下（不建夹，SM 式知识树）";
-            case "zh_CHT": return "摘抄文檔的保存位置：\n集中歸檔=書/非書統一進 prog-data/摘抄/digest-來源名（書=digest-書名、非書=digest-源文檔名，集中統一管理）\n源文檔下方=掛在來源書/文檔之下（老版行為）\nDaily card 目錄=落進發起文檔所在筆記本的 daily card/年/月 目錄（按月歸檔，不看製卡側的閃卡筆記本設置）\n當前文檔同級=掛在發起文檔旁邊（不建夾，多次摘抄聚一層）\n當前文檔子文檔=直接掛在發起文檔之下（不建夾，SM 式知識樹）";
+            case "zh_CN": return "摘抄文档的保存位置：\n集中归档=书/非书统一进 prog-data/摘抄/digest-来源名（书=digest-书名、非书=digest-源文档名，集中统一管理）\n源文档下方=挂在来源书/文档之下（老版行为）\nDaily card 目录=落进发起文档所在笔记本的 daily card/年/月 目录（按月归档，不看制卡侧的闪卡笔记本设置）\n当前文档子文档=直接挂在发起文档之下（不建夹，SM 式知识树）";
+            case "zh_CHT": return "摘抄文檔的保存位置：\n集中歸檔=書/非書統一進 prog-data/摘抄/digest-來源名（書=digest-書名、非書=digest-源文檔名，集中統一管理）\n源文檔下方=掛在來源書/文檔之下（老版行為）\nDaily card 目錄=落進發起文檔所在筆記本的 daily card/年/月 目錄（按月歸檔，不看製卡側的閃卡筆記本設置）\n當前文檔子文檔=直接掛在發起文檔之下（不建夾，SM 式知識樹）";
             case "en_US":
-            default: return "Where digest docs are stored:\nCentralized = book and non-book alike into prog-data/摘抄/digest-<source> (digest-<book> for books, digest-<source doc> for the rest, unified management)\nUnder source doc = under the source book/doc (legacy behavior)\nDaily card folder = into daily card/<year>/<month> under the source doc's notebook (ignores the card side's flashcard notebook setting)\nSibling of current doc = next to the doc you digest from (no folder, re-digests stay on one level)\nChild of current doc = directly under the doc you digest from (no folder, SM-style knowledge tree)";
+            default: return "Where digest docs are stored:\nCentralized = book and non-book alike into prog-data/摘抄/digest-<source> (digest-<book> for books, digest-<source doc> for the rest, unified management)\nUnder source doc = under the source book/doc (legacy behavior)\nDaily card folder = into daily card/<year>/<month> under the source doc's notebook (ignores the card side's flashcard notebook setting)\nChild of current doc = directly under the doc you digest from (no folder, SM-style knowledge tree)";
         }
     }
     // graphbox 期1 大文档三档（2026-09-03）：骨架提示/完整加载确认/轮询降级/加载态
@@ -12324,6 +12569,35 @@ export class TomatoI18n extends TomatoI18nABC {
         }
     }
 
+    /** need-0924-03 □3：单篇删除且该素材为最后线索（同源无存活胶囊）——出处兜记忆 */
+    public 已删除素材最后线索(name: string) {
+        switch (this.lang) {
+            case "zh_CN": return `已删除素材；这是《${name}》的最后一条线索`;
+            case "zh_CHT": return `已刪除素材；這是《${name}》的最後一條線索`;
+            case "ja_JP": return `素材を削除しました。『${name}』の最後の手がかりでした`;
+            case "es_ES": return `Material eliminado; era la última pista de «${name}»`;
+            case "fr_FR": return `Matériau supprimé ; c'était le dernier indice de « ${name} »`;
+            case "it_IT": return `Materiale eliminato; era l'ultimo indizio di «${name}»`;
+            case "en_US":
+            default: return `Material deleted; this was the last trace of "${name}"`;
+        }
+    }
+
+    /** □3 批量版：names=批内最后线索素材的出处名（书名/文档名） */
+    public 已删除N篇素材M篇最后线索(n: number, names: string[]) {
+        const m = names.length;
+        switch (this.lang) {
+            case "zh_CN": return `已删除 ${n} 篇素材；其中 ${m} 篇是最后线索：${names.map(s => `《${s}》`).join("、")}`;
+            case "zh_CHT": return `已刪除 ${n} 篇素材；其中 ${m} 篇是最後線索：${names.map(s => `《${s}》`).join("、")}`;
+            case "ja_JP": return `${n} 件の素材を削除しました。うち ${m} 件が最後の手がかりでした：${names.map(s => `『${s}』`).join("・")}`;
+            case "es_ES": return `${n} materiales eliminados; ${m} eran la última pista: ${names.map(s => `«${s}»`).join(", ")}`;
+            case "fr_FR": return `${n} matériaux supprimés ; ${m} étaient le dernier indice : ${names.map(s => `« ${s} »`).join(", ")}`;
+            case "it_IT": return `${n} materiali eliminati; ${m} erano l'ultimo indizio: ${names.map(s => `«${s}»`).join(", ")}`;
+            case "en_US":
+            default: return `${n} materials deleted; ${m} were the last trace: ${names.map(s => `"${s}"`).join(", ")}`;
+        }
+    }
+
     /** 护卡断句（0914 □5 分片放开）：挂闪卡段落被拦的两种收场 */
     public 断句完成N块M句跳K段(blocks: number, sentences: number, skipped: number) {
         switch (this.lang) {
@@ -13016,6 +13290,32 @@ export class TomatoI18n extends TomatoI18nABC {
         }
     }
 
+    public get 浮条入槽按钮() {
+        switch (this.lang) {
+            case "zh_CN": return "浮条入槽按钮";
+            case "zh_CHT": return "浮條入槽按鈕";
+            case "ja_JP": return "フロートバーのスロット送りボタン";
+            case "es_ES": return "Botones de ranura en la barra flotante";
+            case "fr_FR": return "Boutons d'emplacement de la barre flottante";
+            case "it_IT": return "Pulsanti slot della barra flottante";
+            case "en_US":
+            default: return "Float-bar slot buttons";
+        }
+    }
+
+    public get tip浮条入槽按钮() {
+        switch (this.lang) {
+            case "zh_CN": return "开启后，建过在写的书时浮条才显示「直接入槽」和摘抄态「入槽」按钮（没建过不显示）\n关闭后恒不显示";
+            case "zh_CHT": return "開啟後，建過在寫的書時浮條才顯示「直接入槽」和摘抄態「入槽」按鈕（沒建過不顯示）\n關閉後恆不顯示";
+            case "ja_JP": return "オンの場合、執筆中の本があるときのみフロートバーに「スロットへ直送」と摘抄状態の「スロットへ」ボタンが表示されます\nオフなら常に非表示";
+            case "es_ES": return "Activado: la barra flotante muestra «Directo a la ranura» y «A la ranura» (modo extracto) solo si existe un libro en escritura\nDesactivado: nunca se muestran";
+            case "fr_FR": return "Activé : la barre flottante affiche « Direct dans l'emplacement » et « A l'emplacement » (mode extrait) seulement s'il existe un livre en écriture\nDésactivé : jamais affichés";
+            case "it_IT": return "Attivo: la barra flottante mostra «Diretto nello slot» e «Nello slot» (modo estratto) solo se esiste un libro in scrittura\nDisattivo: mai mostrati";
+            case "en_US":
+            default: return "On: the float bar shows \"Straight to slot\" and the digest-mode \"To slot\" buttons only when a writing book exists\nOff: never shown";
+        }
+    }
+
     public get 请先选中要入槽的内容() {
         switch (this.lang) {
             case "zh_CN": return "请先选中要入槽的内容";
@@ -13660,13 +13960,36 @@ export class TomatoI18n extends TomatoI18nABC {
     }
     public get 官方速记未配置合并路径() {
         switch (this.lang) {
-            case "zh_CN": return "官方速记未配置合并保存路径（设置-闪念速记-保存位置），配置日期模板后可自动搬运";
-            case "zh_CHT": return "官方速記未配置合併保存路徑（設定-速記-保存位置），配置日期模板後可自動搬運";
-            case "es_ES": return "Las notas rápidas oficiales no tienen ruta de guardado combinada (Ajustes-Notas rápidas), configúrela con plantilla de fecha";
-            case "fr_FR": return "Les notes rapides officielles n'ont pas de chemin d'enregistrement combiné (Paramètres-Notes rapides), configurez un modèle de date";
-            case "ja_JP": return "公式速記に統合保存パスが未設定です（設定-速記-保存場所）、日付テンプレートを設定すると自動移動できます";
+            case "zh_CN": return "官方速记未定位到中转文档——官方保存位置仅移动端可配，请核对移动端（思源设置-闪念速记-保存位置）的路径模板，并在本插件设置的「官方速记中转路径模板」填入同款模板";
+            case "zh_CHT": return "官方速記未定位到中轉文檔——官方保存位置僅移動端可配，請核對移動端（思源設定-速記-保存位置）的路徑模板，並在本插件設定的「官方速記中轉路徑模板」填入同款模板";
+            case "es_ES": return "No se localizó el documento de tránsito: la ubicación oficial solo se configura en móvil; revise la plantilla móvil (Ajustes-Notas rápidas) y ponga la misma en «Plantilla de ruta de tránsito» de este plugin";
+            case "fr_FR": return "Document de transit introuvable : l'emplacement officiel ne se règle que sur mobile ; vérifiez le modèle mobile (Paramètres-Notes rapides) et reportez-le dans « Modèle de route de transit » du plugin";
+            case "ja_JP": return "中継ドキュメントを特定できません——公式の保存場所はモバイルでのみ設定できます。モバイル側（設定-速記-保存場所）のパスを確認し、同じものを本プラグインの「中継パステンプレート」に入力してください";
             case "en_US":
-            default: return "Official quick notes have no merged save path (Settings-Quick notes); set a date template to enable auto-move";
+            default: return "Transit doc not located: the official save location is mobile-only; check the mobile template (Settings-Quick notes) and put the same one into this plugin's \"Transit path template\"";
+        }
+    }
+    // need-0926-19 官方速记中转路径模板：设置行标题+说明（桌面端无官方入口的自存兜底通道）
+    public get 官方速记中转路径模板() {
+        switch (this.lang) {
+            case "zh_CN": return "官方速记中转路径模板";
+            case "zh_CHT": return "官方速記中轉路徑模板";
+            case "es_ES": return "Plantilla de ruta de tránsito";
+            case "fr_FR": return "Modèle de route de transit";
+            case "ja_JP": return "中継パステンプレート";
+            case "en_US":
+            default: return "Transit path template";
+        }
+    }
+    public get 中转路径模板说明() {
+        switch (this.lang) {
+            case "zh_CN": return "官方「闪念速记-保存位置」仅移动端可设置且不随同步分发，桌面端插件用本模板定位中转文档：填入与移动端一致的路径模板（如 /闪念速记/{{now | date \"2006-01-02\"}}，支持日期模板变量），留空则仅用本机官方配置";
+            case "zh_CHT": return "官方「閃念速記-保存位置」僅移動端可設置且不隨同步分發，桌面端插件用本模板定位中轉文檔：填入與移動端一致的路徑模板（如 /閃念速記/{{now | date \"2006-01-02\"}}，支持日期模板變量），留空則僅用本機官方配置";
+            case "es_ES": return "La ubicación oficial de notas rápidas solo se configura en móvil y no se sincroniza: el plugin de escritorio usa esta plantilla para localizar el documento de tránsito; ponga la misma ruta que en móvil (p. ej. /闪念速记/{{now | date \"2006-01-02\"}}, admite variables de fecha); vacío = solo configuración oficial local";
+            case "fr_FR": return "L'emplacement officiel des notes rapides se règle uniquement sur mobile et ne se synchronise pas : le plugin desktop utilise ce modèle pour localiser le document de transit ; mettez la même route que sur mobile (ex. /闪念速记/{{now | date \"2006-01-02\"}}, variables de date admises) ; vide = configuration officielle locale seule";
+            case "ja_JP": return "公式の速記保存場所はモバイル専用で同期されないため、デスクトップのプラグインはこのテンプレートで中継ドキュメントを特定します。モバイルと同じパスを入力してください（例 /闪念速记/{{now | date \"2006-01-02\"}}、日付テンプレート変数対応）。空欄なら端末ローカルの公式設定のみ使用";
+            case "en_US":
+            default: return "The official quick-note save location is mobile-only and not synced: the desktop plugin uses this template to locate the transit doc; put the same path as on mobile (e.g. /闪念速记/{{now | date \"2006-01-02\"}}, date template vars supported); empty = local official config only";
         }
     }
     public get 已搬运速记到日记() {
@@ -13678,6 +14001,97 @@ export class TomatoI18n extends TomatoI18nABC {
             case "ja_JP": return "速記{n}件を日記へ移動しました";
             case "en_US":
             default: return "Moved {n} quick notes to diary";
+        }
+    }
+    // need-0926-07「开同步后不生效」提示批：开关行说明+移动端一次性提示+手动三分支诊断
+    public get 官方速记搬运说明() {
+        switch (this.lang) {
+            case "zh_CN": return "自动搬运在桌面端同步结束后触发；移动端只把速记写进中转文档、不自动搬运，整理请在桌面端进行";
+            case "zh_CHT": return "自動搬運在桌面端同步結束後觸發；移動端只把速記寫進中轉文檔、不自動搬運，整理請在桌面端進行";
+            case "es_ES": return "El movimiento automático se dispara al terminar la sincronización en el escritorio; en móvil solo se escribe en el documento de tránsito, no se mueve";
+            case "fr_FR": return "Le déplacement automatique se déclenche à la fin de la synchronisation sur desktop ; sur mobile, seule l'écriture dans le document de transit, pas de déplacement";
+            case "ja_JP": return "自動移動はデスクトップ側の同期完了後に発火します。モバイルは中継ドキュメントに書き込むだけで移動せず、整理はデスクトップで行います";
+            case "en_US":
+            default: return "Auto-move triggers after sync finishes on desktop; mobile only writes to the transit doc and never auto-moves";
+        }
+    }
+    public get 官方速记搬运移动端提示() {
+        switch (this.lang) {
+            case "zh_CN": return "移动端不自动搬运官方速记：速记先写进中转文档，回到桌面端同步后自动整理进日记";
+            case "zh_CHT": return "移動端不自動搬運官方速記：速記先寫進中轉文檔，回到桌面端同步後自動整理進日記";
+            case "es_ES": return "El móvil no mueve automáticamente las notas rápidas: se escriben en el documento de tránsito y el escritorio las pasa al diario tras sincronizar";
+            case "fr_FR": return "Le mobile ne déplace pas automatiquement les notes rapides : elles vont dans le document de transit, puis le desktop les intègre au journal après synchronisation";
+            case "ja_JP": return "モバイルは公式速記を自動移動しません：速記は中継ドキュメントに書き込まれ、デスクトップ同期後に日記へ整理されます";
+            case "en_US":
+            default: return "Mobile does not auto-move quick notes: they go to the transit doc first, then desktop moves them into the diary after sync";
+        }
+    }
+    // need-0926-11 搬运速记按记录时间归位：开关行+说明（官方速记搬运与队列闪念合并两链共用）
+    public get 搬运速记按记录时间归位() {
+        switch (this.lang) {
+            case "zh_CN": return "搬运速记按记录时间归位";
+            case "zh_CHT": return "搬運速記按記錄時間歸位";
+            case "es_ES": return "Mover notas rápidas a su hora registrada";
+            case "fr_FR": return "Placer les notes rapides selon l'heure d'enregistrement";
+            case "ja_JP": return "速記を記録時刻の位置へ移動";
+            case "en_US":
+            default: return "Move quick notes to their recorded time position";
+        }
+    }
+    public get 按记录时间归位说明() {
+        switch (this.lang) {
+            case "zh_CN": return "开启后搬进日记的速记插到记录时刻对应的位置（找同日更晚的速记块插其前面，而非日记末尾）；不重排已有内容，找不到更晚位置时仍追加到末尾";
+            case "zh_CHT": return "開啟後搬進日記的速記插到記錄時刻對應的位置（找同日更晚的速記塊插其前面，而非日記末尾）；不重排已有內容，找不到更晚位置時仍追加到末尾";
+            case "es_ES": return "Al activarlo, las notas rápidas movidas se insertan en la posición de su hora registrada (delante de la primera nota más tardía del día, no al final del diario); no reordena el contenido existente y, sin posición posterior, se añade al final";
+            case "fr_FR": return "Activé, une note rapide déplacée s'insère à la position de son heure d'enregistrement (avant la première note plus tardive du jour, pas en fin de journal) ; rien n'est réordonné, et sans position ultérieure l'ajout se fait en fin";
+            case "ja_JP": return "有効にすると、日記へ移動した速記は記録時刻の位置（同じ日のより遅い速記ブロックの前）に挿入され、日記の末尾には行きません。既存の内容は並べ替えず、より遅い位置が無い場合は末尾に追加します";
+            case "en_US":
+            default: return "When on, moved quick notes insert at their recorded time position (before the first later note of the day) instead of the diary end; existing content is never reordered, and with no later anchor the note still appends at the end";
+        }
+    }
+    // need-0926-13 自定义图标「别名型」声明语法：设置项说明行（@别名 后缀=不建引用文档）
+    public get 图标别名后缀说明() {
+        switch (this.lang) {
+            case "zh_CN": return "词尾加 @别名 声明为别名型图标：不建引用文档，文字型正文开头留「名称：」前缀，emoji 型正文零标记；不带后缀照旧建引用";
+            case "zh_CHT": return "詞尾加 @別名 聲明為別名型圖標：不建引用文檔，文字型正文開頭留「名稱：」前綴，emoji 型正文零標記；不帶後綴照舊建引用";
+            case "es_ES": return "Añade @别名 al final de una palabra para declararla tipo alias: no crea documento de referencia; los tipos de texto anteponen «nombre:» al cuerpo, los emoji lo dejan limpio; sin sufijo se sigue creando la referencia";
+            case "fr_FR": return "Ajoutez @别名 en fin de mot pour le déclarer type alias : aucun document de référence créé ; les types texte préfixent le corps avec « nom : », les emoji le laissent tel quel ; sans suffixe, la référence est créée comme avant";
+            case "ja_JP": return "語尾に @别名 を付けると別名型アイコン：参照文書を作成せず、テキスト型は本文の先頭に「名称：」接頭辞、emoji 型は本文ゼロマーク。接尾辞なしは従来どおり参照を作成";
+            case "en_US":
+            default: return "Suffix @别名 declares an alias kind: no ref doc created; text kinds prefix the body with \"name:\", emoji kinds keep the body clean; without the suffix a reference is created as before";
+        }
+    }
+    public get 官方速记今日无中转文档() {
+        switch (this.lang) {
+            case "zh_CN": return "今日中转文档尚未创建：今天还没有速记记录，或尚未同步到本机——记一条速记并完成同步后再搬运";
+            case "zh_CHT": return "今日中轉文檔尚未創建：今天還沒有速記記錄，或尚未同步到本機——記一條速記並完成同步後再搬運";
+            case "es_ES": return "El documento de tránsito de hoy no existe todavía: no hay notas rápidas hoy o aún no se han sincronizado a este dispositivo";
+            case "fr_FR": return "Le document de transit du jour n'existe pas encore : aucune note rapide aujourd'hui, ou pas encore synchronisée avec cet appareil";
+            case "ja_JP": return "今日の中継ドキュメントはまだ作成されていません：今日の速記がないか、この端末にまだ同期されていません";
+            case "en_US":
+            default: return "Today's transit doc does not exist yet: no quick notes today, or not yet synced to this device";
+        }
+    }
+    public get 官方速记路径不在解析笔记本() {
+        switch (this.lang) {
+            case "zh_CN": return "中转文档 {path} 位于「{box}」笔记本下、不在日记落点笔记本解析范围——请把官方速记保存位置指定为同一笔记本";
+            case "zh_CHT": return "中轉文檔 {path} 位於「{box}」筆記本下、不在日記落點筆記本解析範圍——請把官方速記保存位置指定為同一筆記本";
+            case "es_ES": return "El documento de tránsito {path} está en el cuaderno «{box}», fuera del cuaderno de destino del diario — fije la ubicación de guardado oficial en el mismo cuaderno";
+            case "fr_FR": return "Le document de transit {path} est dans le carnet « {box} », hors du carnet cible du journal — réglez l'emplacement officiel sur le même carnet";
+            case "ja_JP": return "中継ドキュメント {path} はノートブック「{box}」にあり、日記フォール先ノートブックの解析範囲外です——公式速記の保存場所を同じノートブックに指定してください";
+            case "en_US":
+            default: return "Transit doc {path} lives in notebook \"{box}\", outside the diary notebook resolution — set the official save location to that same notebook";
+        }
+    }
+    public get 官方速记无待搬运() {
+        switch (this.lang) {
+            case "zh_CN": return "今日没有待搬运的速记（可能已全部搬运完成）";
+            case "zh_CHT": return "今日沒有待搬運的速記（可能已全部搬運完成）";
+            case "es_ES": return "No hay notas rápidas pendientes de mover hoy (posiblemente ya se movieron todas)";
+            case "fr_FR": return "Aucune note rapide à déplacer aujourd'hui (probablement déjà toutes déplacées)";
+            case "ja_JP": return "今日、移動待ちの速記はありません（すでに全部移動済みの可能性）";
+            case "en_US":
+            default: return "No quick notes waiting to be moved today (probably all already moved)";
         }
     }
     // □4 拍照闪念输入体验翻新（dailynote-pipeline 2026-09-06）：设置行+小窗 placeholder+上传提示
