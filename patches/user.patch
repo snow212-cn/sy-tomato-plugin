@@ -1,32 +1,24 @@
 diff --git a/src/libs/user.ts b/src/libs/user.ts
-index 3a81078..9fd5d8a 100644
+index 09e878e..e66efef 100644
 --- a/src/libs/user.ts
 +++ b/src/libs/user.ts
-@@ -8,7 +8,8 @@ const keyPair = ec.keyFromPublic(MY_PUBKEY, 'hex')
- let _isValid: boolean = null;
+@@ -4,7 +4,8 @@ import { verifyUserSignPure } from './userVerify';
+ // □3 V2（2026-08-31）：验证结果 store 化——PairBar 等响应式组件读 $vipVerified 即时
+ // 跟随（原模块变量读取在验证后灰态滞后到重挂）；lastVerifyResult() 签名不变返回
+ // .get()，既有命令式调用点零改动。null=未验证。
+-const _isValid = writableWithGet<boolean | null>(null);
++// const _isValid = writableWithGet<boolean | null>(null);
++const _isValid = writableWithGet<boolean | null>(true);
+ export const vipVerified = _isValid;
  
  export function lastVerifyResult(): boolean {
--    return _isValid;
-+    // return _isValid;
-+    return true;
+@@ -23,7 +24,8 @@ export function isMe() {
  }
  
- export const expStore = writableWithGet("")
-@@ -27,7 +28,8 @@ export function resetKey() {
+ export function resetKey() {
+-    _isValid.set(null);
++    // _isValid.set(null);
++    _isValid.set(true);
  }
  
  export async function verifyKeyTomato() {
--    return verifyKey("_siyuanTomatoCode_")
-+    // return verifyKey("_siyuanTomatoCode_")
-+    return true;
- }
- 
- export async function verifyKeyProgressive() {
-@@ -35,6 +37,7 @@ export async function verifyKeyProgressive() {
- }
- 
- async function verifyKey(included: string) {
-+    return true;
-     if (_isValid != null) return _isValid;
- 
-     let v = await verifyUserSign(userToken.get(), included);
